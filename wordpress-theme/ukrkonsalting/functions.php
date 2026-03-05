@@ -83,6 +83,14 @@ add_action('widgets_init', function () {
 
 // ─── 4. CUSTOM POST TYPE: SEMINAR ────────────────────────────────────────────
 
+// Temporary stability fix: use Classic editor for seminars (Gutenberg had white-screen issues on some clients)
+add_filter('use_block_editor_for_post_type', function ($use_block_editor, $post_type) {
+    if ($post_type === 'seminar') {
+        return false;
+    }
+    return $use_block_editor;
+}, 10, 2);
+
 add_action('init', function () {
     register_post_type('speaker', [
         'labels' => [
