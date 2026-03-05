@@ -19,8 +19,8 @@ if ($has_seminar) {
   $meta = ukr_seminar_meta($sid);
   $title = get_the_title();
   $link = get_permalink();
-  // Get program items for hero card (first 4 from acf repeater or excerpt)
-  $programs = function_exists('get_field') ? (get_field('seminar_program', $sid) ?: []) : [];
+  // Get program items for hero card (supports textarea + legacy repeater)
+  $program_topics = function_exists('ukr_get_program_topics') ? ukr_get_program_topics($sid, 4) : [];
   $price = $meta['price'] ? number_format((float)$meta['price'], 0, '.', ' ') . ' грн' : '2 000 грн';
   wp_reset_postdata();
 }
@@ -75,12 +75,8 @@ if ($has_seminar) {
       </h3>
 
       <ul class="hero-card-list">
-        <?php if (!empty($programs)):
-    $items = [];
-    foreach (array_slice($programs, 0, 4) as $prog) {
-      $items[] = $prog['prog_heading'] ?? '';
-    }
-    foreach (array_filter($items) as $item): ?>
+        <?php if (!empty($program_topics)):
+    foreach (array_filter($program_topics) as $item): ?>
         <li>
           <div class="check">
             <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#2D5A42" stroke-width="3"

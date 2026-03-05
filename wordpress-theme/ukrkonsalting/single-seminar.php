@@ -15,99 +15,7 @@ $meta = ukr_seminar_meta($id);
 
 // Individual seminar fields (post-specific)
 $raw_program = function_exists('get_field') ? get_field('seminar_program', $id) : get_post_meta($id, 'seminar_program', true);
-
-$normalize_programs = static function ($value): array {
-  // ACF Pro repeater compatibility: if already structured, keep it.
-  if (is_array($value)) {
-    return $value;
-  }
-
-  if (!is_string($value)) {
-    return [];
-  }
-
-  $text = trim(str_replace(["\r\n", "\r"], "\n", $value));
-  if ($text === '') {
-    return [];
-  }
-
-  $lines = array_values(array_filter(array_map('trim', explode("\n", $text)), static fn($line) => $line !== ''));
-  if (empty($lines)) {
-    return [];
-  }
-
-  $programs = [];
-  $current = null;
-
-  $push_current = static function () use (&$current, &$programs): void {
-    if (!$current) {
-      return;
-    }
-    if (empty($current['prog_items'])) {
-      $current['prog_items'][] = ['item' => 'Деталі теми уточнюються.'];
-    }
-    $programs[] = $current;
-  };
-
-  foreach ($lines as $line) {
-    // New topic markers: "Тема 1:", "1.", "1)", "## ..."
-    if (preg_match('/^(?:тема\s*\d+[:.)-]?|\d+[.)-]|##)\s*(.+)?$/iu', $line, $m)) {
-      $push_current();
-      $title = trim((string)($m[1] ?? ''));
-      $current = [
-        'prog_theme' => 'Тема ' . (count($programs) + 1),
-        'prog_heading' => $title !== '' ? $title : ('Тема ' . (count($programs) + 1)),
-        'prog_items' => [],
-        'prog_note' => '',
-      ];
-      continue;
-    }
-
-    // Bullet lines: -, *, •, –
-    if (preg_match('/^[-*•–]\s+(.+)$/u', $line, $m)) {
-      if (!$current) {
-        $current = [
-          'prog_theme' => 'Тема 1',
-          'prog_heading' => 'Програма семінару',
-          'prog_items' => [],
-          'prog_note' => '',
-        ];
-      }
-      $current['prog_items'][] = ['item' => trim($m[1])];
-      continue;
-    }
-
-    // Note line
-    if (preg_match('/^(?:примітка|важливо|note)\s*[:\-]\s*(.+)$/iu', $line, $m)) {
-      if (!$current) {
-        $current = [
-          'prog_theme' => 'Тема 1',
-          'prog_heading' => 'Програма семінару',
-          'prog_items' => [],
-          'prog_note' => '',
-        ];
-      }
-      $current['prog_note'] = trim($m[1]);
-      continue;
-    }
-
-    // Fallback: if no topic yet, start first; then treat as item.
-    if (!$current) {
-      $current = [
-        'prog_theme' => 'Тема 1',
-        'prog_heading' => 'Програма семінару',
-        'prog_items' => [],
-        'prog_note' => '',
-      ];
-    }
-    $current['prog_items'][] = ['item' => $line];
-  }
-
-  $push_current();
-  return $programs;
-};
-
-$programs = $normalize_programs($raw_program);
+$programs = function_exists('ukr_parse_programs') ? ukr_parse_programs($raw_program) : [];
 $speaker_post = function_exists('get_field') ? get_field('seminar_speaker', $id) : null;
 if (is_numeric($speaker_post)) {
   $speaker_post = get_post((int) $speaker_post);
@@ -160,7 +68,23 @@ $render_title = static function (string $value) use ($allowed_title_html): strin
 // Global seminar UI/settings (options page)
 $benefits = $get_global_repeater('global_benefits');
 $legal_note = $get_global_text('seminar_legal');
-$who_list = $get_global_repeater('global_target');
+$seminar_target_raw = function_exists('get_field') ? get_field('seminar_target', $id) : get_post_meta($id, 'seminar_target', true);
+$who_list = [];
+if (is_string($seminar_target_raw) && trim($seminar_target_raw) !== '') {
+  $lines = preg_split('/\r\n|\r|\n/', preg_replace('/<\s*br\s*\/?>/iu', "\n", $seminar_target_raw));
+  $idx = 1;
+  foreach ((array) $lines as $line) {
+    $line = trim(wp_strip_all_tags((string) $line));
+    $line = preg_replace('/^[-*•–\d\.)\s]+/u', '', $line);
+    if ($line === '') {
+      continue;
+    }
+    $who_list[] = ['num' => sprintf('%02d', $idx++), 'title' => $line, 'text' => ''];
+  }
+}
+if (empty($who_list)) {
+  $who_list = $get_global_repeater('global_target');
+}
 $what_get = $get_global_repeater('global_what_get');
 $faq = $get_global_repeater('global_faq');
 
@@ -395,9 +319,11 @@ endif; ?>
           <h4>
             <?php echo esc_html($w['title']); ?>
           </h4>
+          <?php if (!empty($w['text'])): ?>
           <p>
             <?php echo esc_html($w['text']); ?>
           </p>
+          <?php endif; ?>
         </div>
       </div>
       <?php
@@ -452,6 +378,7 @@ endforeach; ?>
     if (is_array($items))
       foreach ($items as $item) {
         $text = is_string($item) ? $item : ($item['item'] ?? '');
+        $text = trim(wp_strip_all_tags(preg_replace('/<\s*br\s*\/?>/iu', ' ', (string) $text)));
         if ($text)
           echo '<li><div class="prog-dot"></div>' . esc_html($text) . '</li>';
       }

@@ -298,6 +298,104 @@ function ukr_format_date(string $date): string
     return intval(date('j', $ts)) . ' ' . $months[intval(date('n', $ts))] . ' ' . date('Y', $ts);
 }
 
+/**
+ * Parse seminar program from either ACF repeater array (legacy/PRO) or textarea (ACF Free).
+ */
+function ukr_parse_programs($value): array
+{
+    if (is_array($value)) {
+        return $value;
+    }
+
+    if (!is_string($value)) {
+        return [];
+    }
+
+    $text = preg_replace('/<\s*br\s*\/?>/iu', "\n", $value);
+    $text = wp_strip_all_tags((string) $text);
+    $text = trim(str_replace(["\r\n", "\r"], "\n", $text));
+
+    if ($text === '') {
+        return [];
+    }
+
+    $lines = array_values(array_filter(array_map('trim', explode("\n", $text)), static fn($line) => $line !== ''));
+    if (empty($lines)) {
+        return [];
+    }
+
+    $programs = [];
+    $current = null;
+
+    $push = static function () use (&$current, &$programs): void {
+        if (!$current) {
+            return;
+        }
+        if (empty($current['prog_items'])) {
+            $current['prog_items'][] = ['item' => 'Деталі теми уточнюються.'];
+        }
+        $programs[] = $current;
+    };
+
+    foreach ($lines as $line) {
+        if (preg_match('/^(?:тема\s*\d+[:.)-]?|\d+[.)-]|##)\s*(.+)?$/iu', $line, $m)) {
+            $push();
+            $title = trim((string) ($m[1] ?? ''));
+            $n = count($programs) + 1;
+            $current = [
+                'prog_theme' => 'Тема ' . $n,
+                'prog_heading' => $title !== '' ? $title : ('Тема ' . $n),
+                'prog_items' => [],
+                'prog_note' => '',
+            ];
+            continue;
+        }
+
+        if (preg_match('/^[-*•–]\s+(.+)$/u', $line, $m)) {
+            if (!$current) {
+                $current = ['prog_theme' => 'Тема 1', 'prog_heading' => 'Програма семінару', 'prog_items' => [], 'prog_note' => ''];
+            }
+            $current['prog_items'][] = ['item' => trim((string) $m[1])];
+            continue;
+        }
+
+        if (preg_match('/^(?:примітка|важливо|note)\s*[:\-]\s*(.+)$/iu', $line, $m)) {
+            if (!$current) {
+                $current = ['prog_theme' => 'Тема 1', 'prog_heading' => 'Програма семінару', 'prog_items' => [], 'prog_note' => ''];
+            }
+            $current['prog_note'] = trim((string) $m[1]);
+            continue;
+        }
+
+        if (!$current) {
+            $current = ['prog_theme' => 'Тема 1', 'prog_heading' => 'Програма семінару', 'prog_items' => [], 'prog_note' => ''];
+        }
+        $current['prog_items'][] = ['item' => $line];
+    }
+
+    $push();
+    return $programs;
+}
+
+/**
+ * Return list of program headings for cards/archive.
+ */
+function ukr_get_program_topics(int $post_id, int $limit = 5): array
+{
+    $raw = function_exists('get_field') ? get_field('seminar_program', $post_id) : get_post_meta($post_id, 'seminar_program', true);
+    $programs = ukr_parse_programs($raw);
+
+    $headings = [];
+    foreach ($programs as $prog) {
+        $h = is_array($prog) ? trim((string) ($prog['prog_heading'] ?? '')) : '';
+        if ($h !== '') {
+            $headings[] = $h;
+        }
+    }
+
+    return array_slice($headings, 0, $limit);
+}
+
 // ─── 9. FLUSH REWRITE RULES ON THEME SWITCH ──────────────────────────────────
 
 add_action('after_switch_theme', 'flush_rewrite_rules');

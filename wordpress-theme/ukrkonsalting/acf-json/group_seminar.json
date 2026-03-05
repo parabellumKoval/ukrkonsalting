@@ -44,6 +44,14 @@
         "rows": 3
       },
       {
+        "key": "field_seminar_target",
+        "label": "Цільова аудиторія (індивідуально для семінару)",
+        "name": "seminar_target",
+        "type": "textarea",
+        "rows": 6,
+        "instructions": "По одному пункту з нового рядка. Це поле індивідуальне для кожного семінару."
+      },
+      {
         "key": "field_seminar_program",
         "label": "Програма семінару (текстом, один блок на тему)",
         "name": "seminar_program",

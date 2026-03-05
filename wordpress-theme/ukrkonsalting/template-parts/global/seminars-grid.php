@@ -39,8 +39,8 @@ $count = 0;
   $card_bg = ($count % 2 === 0) ? $color_alt : '';
   $date_str = $meta['date'] ? ukr_format_date($meta['date']) : '';
 
-  // Topics from seminar_program ACF repeater
-  $programs = function_exists('get_field') ? (get_field('seminar_program', $id) ?: []) : [];
+  // Program topics from seminar_program (supports ACF Free textarea + legacy repeater)
+  $program_topics = function_exists('ukr_get_program_topics') ? ukr_get_program_topics($id, 5) : [];
 ?>
       <div class="seminar-card reveal">
         <div class="seminar-card-top" <?php echo $card_bg ? 'style="background:' . esc_attr($card_bg) . '"' : '' ; ?>>
@@ -65,17 +65,13 @@ $count = 0;
 
         <div class="seminar-card-body">
           <ul class="seminar-topics">
-            <?php if (!empty($programs)):
-    foreach (array_slice($programs, 0, 5) as $prog):
-      $heading = $prog['prog_heading'] ?? '';
-      if ($heading):
-?>
+            <?php if (!empty($program_topics)):
+    foreach ($program_topics as $heading): ?>
             <li>
               <div class="dot"></div>
               <?php echo esc_html($heading); ?>
             </li>
             <?php
-      endif;
     endforeach;
   else:
     // Fallback: use post excerpt words as bullet points

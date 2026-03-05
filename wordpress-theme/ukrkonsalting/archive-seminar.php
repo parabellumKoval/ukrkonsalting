@@ -44,7 +44,7 @@ while (have_posts()):
   $meta = ukr_seminar_meta($id);
   $price_fmt = $meta['price'] ? number_format((float)$meta['price'], 0, '.', ' ') : '2 000';
   $date_str = $meta['date'] ? ukr_format_date($meta['date']) : '';
-  $programs = function_exists('get_field') ? (get_field('seminar_program', $id) ?: []) : [];
+  $program_topics = function_exists('ukr_get_program_topics') ? ukr_get_program_topics($id, 5) : [];
 ?>
     <div class="seminar-card reveal">
       <div class="seminar-card-top" <?php echo ($count % 2 === 0) ? 'style="background:#2D5A42"' : ''; ?>>
@@ -68,11 +68,9 @@ while (have_posts()):
       </div>
       <div class="seminar-card-body">
         <ul class="seminar-topics">
-          <?php if (!empty($programs)):
-    foreach (array_slice($programs, 0, 5) as $prog):
-      $h = $prog['prog_heading'] ?? '';
-      if ($h)
-        echo '<li><div class="dot"></div>' . esc_html($h) . '</li>';
+          <?php if (!empty($program_topics)):
+    foreach ($program_topics as $h):
+      echo '<li><div class="dot"></div>' . esc_html($h) . '</li>';
     endforeach;
   else:
     $ex = get_the_excerpt();
