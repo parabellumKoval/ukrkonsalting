@@ -45,44 +45,12 @@
       },
       {
         "key": "field_seminar_program",
-        "label": "Програма (акордеон тем)",
+        "label": "Програма семінару (текстом, один блок на тему)",
         "name": "seminar_program",
-        "type": "repeater",
-        "sub_fields": [
-          {
-            "key": "field_prog_theme",
-            "label": "Підзаголовок теми",
-            "name": "prog_theme",
-            "type": "text",
-            "placeholder": "Тема 1"
-          },
-          {
-            "key": "field_prog_heading",
-            "label": "Заголовок теми",
-            "name": "prog_heading",
-            "type": "text"
-          },
-          {
-            "key": "field_prog_items",
-            "label": "Пункти теми",
-            "name": "prog_items",
-            "type": "repeater",
-            "sub_fields": [
-              {
-                "key": "field_prog_item_text",
-                "label": "Пункт",
-                "name": "item",
-                "type": "text"
-              }
-            ]
-          },
-          {
-            "key": "field_prog_note",
-            "label": "Примітка",
-            "name": "prog_note",
-            "type": "text"
-          }
-        ]
+        "type": "textarea",
+        "rows": 14,
+        "new_lines": "br",
+        "instructions": "Зручно заповнювати текстом. Формат: \nТема 1: Назва\n- пункт\n- пункт\nТема 2: Назва\n- пункт\nПримітка: текст.\n\nЯкщо формат трохи відрізняється — шаблон на фронті намагається м’яко розпарсити без поломки."
       },
       {
         "key": "field_seminar_speaker",

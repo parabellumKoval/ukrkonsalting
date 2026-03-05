@@ -14,7 +14,100 @@ $id = get_the_ID();
 $meta = ukr_seminar_meta($id);
 
 // Individual seminar fields (post-specific)
-$programs = function_exists('get_field') ? (get_field('seminar_program', $id) ?: []) : [];
+$raw_program = function_exists('get_field') ? get_field('seminar_program', $id) : get_post_meta($id, 'seminar_program', true);
+
+$normalize_programs = static function ($value): array {
+  // ACF Pro repeater compatibility: if already structured, keep it.
+  if (is_array($value)) {
+    return $value;
+  }
+
+  if (!is_string($value)) {
+    return [];
+  }
+
+  $text = trim(str_replace(["\r\n", "\r"], "\n", $value));
+  if ($text === '') {
+    return [];
+  }
+
+  $lines = array_values(array_filter(array_map('trim', explode("\n", $text)), static fn($line) => $line !== ''));
+  if (empty($lines)) {
+    return [];
+  }
+
+  $programs = [];
+  $current = null;
+
+  $push_current = static function () use (&$current, &$programs): void {
+    if (!$current) {
+      return;
+    }
+    if (empty($current['prog_items'])) {
+      $current['prog_items'][] = ['item' => 'Деталі теми уточнюються.'];
+    }
+    $programs[] = $current;
+  };
+
+  foreach ($lines as $line) {
+    // New topic markers: "Тема 1:", "1.", "1)", "## ..."
+    if (preg_match('/^(?:тема\s*\d+[:.)-]?|\d+[.)-]|##)\s*(.+)?$/iu', $line, $m)) {
+      $push_current();
+      $title = trim((string)($m[1] ?? ''));
+      $current = [
+        'prog_theme' => 'Тема ' . (count($programs) + 1),
+        'prog_heading' => $title !== '' ? $title : ('Тема ' . (count($programs) + 1)),
+        'prog_items' => [],
+        'prog_note' => '',
+      ];
+      continue;
+    }
+
+    // Bullet lines: -, *, •, –
+    if (preg_match('/^[-*•–]\s+(.+)$/u', $line, $m)) {
+      if (!$current) {
+        $current = [
+          'prog_theme' => 'Тема 1',
+          'prog_heading' => 'Програма семінару',
+          'prog_items' => [],
+          'prog_note' => '',
+        ];
+      }
+      $current['prog_items'][] = ['item' => trim($m[1])];
+      continue;
+    }
+
+    // Note line
+    if (preg_match('/^(?:примітка|важливо|note)\s*[:\-]\s*(.+)$/iu', $line, $m)) {
+      if (!$current) {
+        $current = [
+          'prog_theme' => 'Тема 1',
+          'prog_heading' => 'Програма семінару',
+          'prog_items' => [],
+          'prog_note' => '',
+        ];
+      }
+      $current['prog_note'] = trim($m[1]);
+      continue;
+    }
+
+    // Fallback: if no topic yet, start first; then treat as item.
+    if (!$current) {
+      $current = [
+        'prog_theme' => 'Тема 1',
+        'prog_heading' => 'Програма семінару',
+        'prog_items' => [],
+        'prog_note' => '',
+      ];
+    }
+    $current['prog_items'][] = ['item' => $line];
+  }
+
+  $push_current();
+  return $programs;
+};
+
+$programs = $normalize_programs($raw_program);
 $speaker_post = function_exists('get_field') ? get_field('seminar_speaker', $id) : null;
 if (is_numeric($speaker_post)) {
   $speaker_post = get_post((int) $speaker_post);
