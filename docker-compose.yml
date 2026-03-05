@@ -1,0 +1,44 @@
+services:
+  db:
+    image: mariadb:10.11
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+
+  wordpress:
+    depends_on:
+      - db
+    image: wordpress:latest
+    command: >
+      sh -c "a2enmod rewrite >/dev/null 2>&1 || true
+      && sed -i '/<Directory \\/var\\/www\\/>/,/<\\/Directory>/ s/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf
+      && apache2-foreground"
+    ports:
+      - "8888:80"
+    restart: always
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: wordpress
+    volumes:
+      - ./wordpress-theme/ukrkonsalting:/var/www/html/wp-content/themes/ukrkonsalting
+
+  phpmyadmin:
+    depends_on:
+      - db
+    image: phpmyadmin:latest
+    ports:
+      - "8889:80"
+    restart: always
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: root
+
+volumes:
+  db_data:

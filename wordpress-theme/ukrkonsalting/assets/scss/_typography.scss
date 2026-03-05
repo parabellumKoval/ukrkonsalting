@@ -1,0 +1,136 @@
+// ─── TYPOGRAPHY ───────────────────────────────────────────────────────────────
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: $font-serif;
+  line-height: 1.15;
+  color: var(--green-deep);
+  font-weight: 700;
+}
+
+.section-label {
+  @include section-label;
+}
+
+.section-title {
+  font-family: $font-serif;
+  font-size: clamp(28px, 3.5vw, 40px);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--green-deep);
+  margin-bottom: 14px;
+  letter-spacing: -0.5px;
+
+  em {
+    font-style: italic;
+    color: var(--green-soft);
+  }
+}
+
+.section-sub {
+  font-size: 16px;
+  color: var(--text-mid);
+  font-weight: 300;
+  max-width: 540px;
+  line-height: 1.7;
+}
+
+// Seminar page section titles
+.sec-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--green-soft);
+  margin-bottom: 16px;
+
+  &::before {
+    content: '';
+    width: 18px;
+    height: 2px;
+    background: var(--green-soft);
+    border-radius: 2px;
+  }
+}
+
+.sec-title {
+  font-family: $font-serif;
+  font-size: clamp(30px, 4vw, 46px);
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--green-deep);
+  letter-spacing: -0.5px;
+  margin-bottom: 16px;
+
+  em {
+    font-style: italic;
+    color: var(--green-soft);
+  }
+}
+
+.sec-lead {
+  font-size: 18px;
+  color: var(--text-mid);
+  font-weight: 400;
+  line-height: 1.75;
+  max-width: 640px;
+}
+
+// WordPress content
+.entry-content {
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin: 1.5em 0 0.5em;
+  }
+
+  p,
+  ul,
+  ol {
+    margin-bottom: 1em;
+  }
+
+  ul,
+  ol {
+    padding-left: 1.5em;
+  }
+
+  ul {
+    list-style: disc;
+  }
+
+  ol {
+    list-style: decimal;
+  }
+
+  img {
+    border-radius: $radius-md;
+    margin: 1.5em 0;
+  }
+
+  a {
+    color: var(--green-soft);
+    text-decoration: underline;
+  }
+
+  blockquote {
+    border-left: 3px solid var(--green-soft);
+    padding: 16px 24px;
+    margin: 2em 0;
+    background: var(--green-mist);
+    border-radius: 0 $radius-md $radius-md 0;
+    font-style: italic;
+    color: var(--text-mid);
+  }
+}

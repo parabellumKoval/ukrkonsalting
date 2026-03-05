@@ -1,0 +1,90 @@
+[
+  {
+    "key": "group_global_seminar_settings",
+    "title": "Глобальні налаштування семінарів",
+    "fields": [
+      {
+        "key": "field_global_benefits",
+        "label": "Дефолтні переваги",
+        "name": "global_benefits",
+        "type": "repeater",
+        "sub_fields": [
+          {
+            "key": "field_gbc_icon",
+            "label": "Емодзі",
+            "name": "bc_icon",
+            "type": "text"
+          },
+          {
+            "key": "field_gbc_title",
+            "label": "Заголовок",
+            "name": "title",
+            "type": "text"
+          },
+          {
+            "key": "field_gbc_text",
+            "label": "Опис",
+            "name": "text",
+            "type": "textarea"
+          }
+        ]
+      },
+      {
+        "key": "field_global_what_get",
+        "label": "Дефолтно: Що ви отримаєте",
+        "name": "global_what_get",
+        "type": "repeater",
+        "sub_fields": [
+          {
+            "key": "field_gget_icon",
+            "label": "Емодзі",
+            "name": "get_icon",
+            "type": "text"
+          },
+          {
+            "key": "field_gget_title",
+            "label": "Заголовок",
+            "name": "title",
+            "type": "text"
+          },
+          {
+            "key": "field_gget_text",
+            "label": "Опис",
+            "name": "text",
+            "type": "textarea"
+          }
+        ]
+      },
+      {
+        "key": "field_global_faq",
+        "label": "Дефолтний FAQ",
+        "name": "global_faq",
+        "type": "repeater",
+        "sub_fields": [
+          {
+            "key": "field_gfaq_q",
+            "label": "Питання",
+            "name": "question",
+            "type": "text"
+          },
+          {
+            "key": "field_gfaq_a",
+            "label": "Відповідь",
+            "name": "answer",
+            "type": "textarea"
+          }
+        ]
+      }
+    ],
+    "location": [
+      [
+        {
+          "param": "options_page",
+          "operator": "==",
+          "value": "theme-settings"
+        }
+      ]
+    ],
+    "active": true
+  }
+]

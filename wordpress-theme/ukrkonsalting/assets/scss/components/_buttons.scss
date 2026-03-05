@@ -1,0 +1,181 @@
+// ─── BUTTONS ──────────────────────────────────────────────────────────────────
+
+%btn-base {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: $radius-pill;
+  font-size: 15px;
+  font-weight: 500;
+  font-family: $font-sans;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: background $transition-fast, transform $transition-fast, box-shadow $transition-base;
+
+  svg {
+    transition: transform $transition-fast;
+  }
+
+  &:hover svg {
+    transform: translateX(3px);
+  }
+}
+
+.btn-primary {
+  @extend %btn-base;
+  background: var(--green-deep);
+  color: var(--white);
+  padding: 14px 28px;
+  box-shadow: 0 4px 16px rgba(28, 56, 41, .2);
+
+  &:hover {
+    background: var(--green-mid);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(28, 56, 41, .25);
+  }
+}
+
+.btn-ghost {
+  @extend %btn-base;
+  background: transparent;
+  color: var(--text-mid);
+  font-size: 14px;
+
+  &:hover {
+    color: var(--green-deep);
+  }
+}
+
+.btn-gold {
+  @extend %btn-base;
+  background: var(--gold);
+  color: var(--green-deep);
+  padding: 16px 32px;
+  font-size: 16px;
+  font-weight: 700;
+  box-shadow: 0 4px 20px rgba(201, 168, 76, .4);
+
+  &:hover {
+    background: var(--gold-light);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(201, 168, 76, .45);
+  }
+}
+
+.btn-gold-sm {
+  @extend %btn-base;
+  background: var(--green-deep);
+  color: #fff;
+  padding: 14px 28px;
+  font-size: 15px;
+  font-weight: 600;
+  box-shadow: 0 3px 14px rgba(28, 56, 41, .2);
+
+  &:hover {
+    background: var(--green-mid);
+    transform: translateY(-1px);
+  }
+}
+
+.btn-gold-lg {
+  @extend %btn-base;
+  background: var(--gold);
+  color: var(--green-deep);
+  padding: 16px 30px;
+  font-size: 16px;
+  font-weight: 700;
+  box-shadow: 0 4px 20px rgba(201, 168, 76, .4);
+
+  &:hover {
+    background: var(--gold-light);
+    transform: translateY(-2px);
+  }
+}
+
+.btn-light {
+  @extend %btn-base;
+  background: var(--white);
+  color: var(--green-deep);
+  padding: 14px 28px;
+  font-size: 15px;
+  font-weight: 600;
+
+  &:hover {
+    opacity: 0.92;
+    transform: translateY(-2px);
+  }
+}
+
+.btn-ghost-w {
+  @extend %btn-base;
+  background: rgba(255, 255, 255, .09);
+  border: 1.5px solid rgba(255, 255, 255, .2);
+  color: rgba(255, 255, 255, .8);
+  padding: 15px 26px;
+  font-size: 15px;
+
+  &:hover {
+    background: rgba(255, 255, 255, .14);
+    border-color: rgba(255, 255, 255, .35);
+  }
+}
+
+.btn-outline-light {
+  @extend %btn-base;
+  background: transparent;
+  border: 1.5px solid rgba(255, 255, 255, .3);
+  color: rgba(255, 255, 255, .85);
+  padding: 13px 24px;
+  font-size: 14px;
+
+  &:hover {
+    border-color: rgba(255, 255, 255, .6);
+    background: rgba(255, 255, 255, .05);
+  }
+}
+
+.btn-outline-w {
+  @extend %btn-base;
+  background: rgba(255, 255, 255, .1);
+  border: 1.5px solid rgba(255, 255, 255, .25);
+  color: rgba(255, 255, 255, .85);
+  padding: 15px 26px;
+  font-size: 15px;
+
+  &:hover {
+    background: rgba(255, 255, 255, .16);
+    border-color: rgba(255, 255, 255, .45);
+  }
+}
+
+// Nav CTA (overrides)
+.nav-cta {
+  background: var(--green-deep) !important;
+  color: var(--white) !important;
+  padding: 10px 22px;
+  border-radius: $radius-pill;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background $transition-fast, transform $transition-fast;
+
+  &:hover {
+    background: var(--green-mid) !important;
+    transform: translateY(-1px);
+  }
+}
+
+// Seminar card button
+.seminar-btn {
+  @extend %btn-base;
+  background: var(--green-deep);
+  color: var(--white);
+  padding: 11px 22px;
+  font-size: 14px;
+
+  &:hover {
+    background: var(--green-mid);
+    transform: translateY(-1px);
+  }
+}

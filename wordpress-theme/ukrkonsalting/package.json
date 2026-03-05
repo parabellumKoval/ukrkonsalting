@@ -1,0 +1,14 @@
+{
+  "name": "ukrkonsalting",
+  "version": "1.0.0",
+  "description": "WordPress theme for УкрКонсалтинг",
+  "private": true,
+  "scripts": {
+    "build": "sass assets/scss/main.scss assets/css/main.css --style=compressed --no-source-map",
+    "watch": "sass assets/scss/main.scss assets/css/main.css --watch --style=expanded",
+    "dev": "sass assets/scss/main.scss assets/css/main.css --watch --style=expanded"
+  },
+  "devDependencies": {
+    "sass": "^1.71.0"
+  }
+}

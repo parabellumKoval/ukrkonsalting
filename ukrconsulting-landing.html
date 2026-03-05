@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>УкрКонсалтинг — Повітряний Мінімалізм 2026</title>
+  <!-- [Figma Dev Mode] Typography Specs: 
+     Family: Inter (Neo-Grotesque)
+     Heading Weight: 300 (Light) & 600 (Semi-bold)
+     Body Weight: 300 (Light)
+-->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      /* [Figma Dev Mode] Color Variables. Palette: Bright Greenery */
+      --green-bright: #00D06C;
+      --lime: #D2FF33;
+      --mint: #A8F0C6;
+      --bg-color: #FAFCFB;
+      /* Milky/Pure White base */
+      --surface: #FFFFFF;
+      --text-main: #0B140F;
+      --text-soft: #637A6D;
+      --glass-bg: rgba(255, 255, 255, 0.7);
+      --glass-border: rgba(255, 255, 255, 0.5);
+
+      /* Air Shadow */
+      --shadow-air: 0 40px 80px -20px rgba(0, 208, 108, 0.08);
+      --spacing-section: 160px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      line-height: 1.5;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Typography Base */
+    h1 {
+      font-size: clamp(48px, 8vw, 104px);
+      font-weight: 300;
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+    }
+
+    h1 strong {
+      font-weight: 600;
+      color: var(--green-bright);
+    }
+
+    h2 {
+      font-size: clamp(32px, 5vw, 64px);
+      font-weight: 300;
+      letter-spacing: -0.03em;
+    }
+
+    h3 {
+      font-size: 24px;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+    }
+
+    p {
+      font-size: 18px;
+      color: var(--text-soft);
+      font-weight: 300;
+    }
+
+    /* Structural Air Containers */
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+
+    /* ── Floating Navbar ── */
+    /* [Figma Dev Mode] Component: Nav Pill. Effects: Background Blur 24px */
+    nav {
+      position: fixed;
+      top: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1000;
+      background: var(--glass-bg);
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      border: 1px solid var(--glass-border);
+      padding: 16px 32px;
+      border-radius: 100px;
+      display: flex;
+      gap: 48px;
+      align-items: center;
+      box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.03);
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    nav a {
+      text-decoration: none;
+      color: var(--text-main);
+      font-weight: 500;
+      font-size: 14px;
+      transition: color 0.3s;
+    }
+
+    nav a:hover {
+      color: var(--green-bright);
+    }
+
+    .nav-brand {
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .nav-brand::before {
+      content: '';
+      display: block;
+      width: 12px;
+      height: 12px;
+      background: var(--green-bright);
+      border-radius: 50%;
+      box-shadow: 0 0 20px var(--green-bright);
+    }
+
+    /* Buttons */
+    .btn-air {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      background: var(--text-main);
+      color: #fff;
+      padding: 20px 40px;
+      border-radius: 100px;
+      font-size: 16px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s, background 0.3s;
+    }
+
+    /* [Figma Dev Mode] Interaction: Hover -> Sublte Lift & Glow */
+    .btn-air:hover {
+      transform: translateY(-4px) scale(1.02);
+      background: var(--green-bright);
+      box-shadow: 0 24px 48px -12px rgba(0, 208, 108, 0.4);
+    }
+
+    .btn-lime {
+      background: var(--lime);
+      color: var(--text-main);
+    }
+
+    .btn-lime:hover {
+      background: #E1FF66;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+      min-height: 100vh;
+      padding-top: 120px;
+    }
+
+    .hero-content {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 40px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 24px;
+      border-radius: 100px;
+      background: rgba(0, 208, 108, 0.05);
+      color: var(--green-bright);
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .hero-visual {
+      position: relative;
+    }
+
+    /* 
+   Nano Banana 2 Integration: Virtual Background Removal via multiply blend mode. 
+   Removes pure white background naturally while retaining glass refractions perfectly.
+*/
+    .hero-visual img {
+      width: 140%;
+      margin-left: -20%;
+      mix-blend-mode: multiply;
+      /* Virtual bg removal technique */
+      transform: translateY(0);
+      animation: floating 8s ease-in-out infinite;
+      filter: contrast(1.05) saturate(1.1);
+    }
+
+    /* Animations Core */
+    @keyframes floating {
+      0% {
+        transform: translateY(0px) rotate(0deg);
+      }
+
+      50% {
+        transform: translateY(-30px) rotate(2deg);
+      }
+
+      100% {
+        transform: translateY(0px) rotate(0deg);
+      }
+    }
+
+    /* [Figma Dev Mode] Interaction: Scroll triggers 'fade-in-up' (Spring: duration 1s, delay based on hierarchy) */
+    .fade-in-up {
+      opacity: 0;
+      transform: translateY(60px);
+      transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .fade-in-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .delay-100 {
+      transition-delay: 0.1s;
+    }
+
+    .delay-200 {
+      transition-delay: 0.2s;
+    }
+
+    .delay-300 {
+      transition-delay: 0.3s;
+    }
+
+    .delay-400 {
+      transition-delay: 0.4s;
+    }
+
+    /* ── Stats Marquee ── */
+    .stats-marq {
+      position: relative;
+      border-top: 1px solid rgba(0, 0, 0, 0.04);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+      padding: 40px 0;
+      display: flex;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    .stats-marq-inner {
+      display: flex;
+      gap: 120px;
+      animation: scroll-left 40s linear infinite;
+    }
+
+    @keyframes scroll-left {
+      0% {
+        transform: translateX(0);
+      }
+
+      100% {
+        transform: translateX(-50%);
+      }
+    }
+
+    .stat-item-airy {
+      display: inline-flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .stat-num-airy {
+      font-size: 64px;
+      font-weight: 300;
+      letter-spacing: -2px;
+      color: var(--text-main);
+      line-height: 1;
+    }
+
+    .stat-label-airy {
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--text-soft);
+    }
+
+    /* ── Features Flow (No Box Frames!) ── */
+    .section {
+      padding: var(--spacing-section) 0;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 40px;
+      margin-top: 80px;
+    }
+
+    /* [Figma Dev Mode] Component: Air Card. Note: No borders, relies on subtle ambient shadow on hover */
+    .air-card {
+      background: var(--surface);
+      border-radius: 40px;
+      padding: 64px 48px;
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 0 0 transparent;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .air-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 40px;
+      padding: 1px;
+      background: linear-gradient(135deg, var(--green-bright), transparent);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: 0;
+      transition: opacity 0.5s;
+    }
+
+    .air-card:hover {
+      transform: translateY(-16px);
+      box-shadow: var(--shadow-air);
+    }
+
+    .air-card:hover::before {
+      opacity: 1;
+    }
+
+    .air-card .icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: var(--lime);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      color: var(--text-main);
+      margin-bottom: 16px;
+    }
+
+    /* ── Seminars Architecture ── */
+    .seminars-list {
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+      margin-top: 80px;
+    }
+
+    .seminar-row {
+      display: grid;
+      grid-template-columns: 1fr 2fr 1fr;
+      gap: 40px;
+      align-items: center;
+      padding: 48px;
+      border-radius: 32px;
+      background: var(--mint);
+      transition: transform 0.5s;
+    }
+
+    .seminar-row:hover {
+      transform: scale(1.02);
+    }
+
+    .seminar-row.dark {
+      background: var(--text-main);
+      color: var(--bg-color);
+    }
+
+    .seminar-row.dark * {
+      color: var(--bg-color);
+    }
+
+    .seminar-row.dark p {
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    /* ── Footer ── */
+    footer {
+      padding: 120px 0 60px;
+      text-align: center;
+    }
+
+    .footer-cta {
+      font-size: clamp(40px, 6vw, 80px);
+      font-weight: 300;
+      letter-spacing: -0.04em;
+      margin-bottom: 60px;
+    }
+
+    /* Responsive Grid Adjustments */
+    @media (max-width: 1024px) {
+      nav {
+        padding: 16px 24px;
+        width: 90vw;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .hero {
+        grid-template-columns: 1fr;
+        padding-top: 160px;
+        min-height: auto;
+      }
+
+      .hero-visual img {
+        width: 100%;
+        margin-left: 0;
+      }
+
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .seminar-row {
+        grid-template-columns: 1fr;
+        text-align: left;
+      }
+
+      .seminar-row>div:last-child {
+        text-align: left !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+    <a href="#" class="nav-brand">УКРКОНСАЛТИНГ</a>
+    <div class="nav-links" style="display:flex; gap:32px;">
+      <a href="#about">Про навчання</a>
+      <a href="#seminars">Семінари</a>
+      <a href="#format">Формат</a>
+    </div>
+    <a href="#contact" class="btn-air" style="padding: 12px 24px; font-size: 14px;">Зв'язок</a>
+  </nav>
+
+  <div class="container">
+    <section class="hero">
+      <div class="hero-content">
+        <div class="hero-badge fade-in-up">Екологія 2026</div>
+        <h1 class="fade-in-up delay-100">Навчання<br>нового<br><strong>покоління</strong></h1>
+        <p class="fade-in-up delay-200">Відмовляємось від сухих лекцій. "Повітряний" підхід до найскладніших екологічних
+          нормативів та законодавства.</p>
+        <a href="#seminars" class="btn-air fade-in-up delay-300">Переглянути програми</a>
+      </div>
+      <div class="hero-visual fade-in-up delay-400">
+        <!-- Generated via Nano Banana 2 MCP -->
+        <img
+          src="file:///Users/andrejkoval/.gemini/antigravity/brain/f8acec1d-a0f6-4f70-9ccb-cd8cfae3074d/abstract_green_glass_1772621760574.png"
+          alt="Органічне скло і світло">
+      </div>
+    </section>
+  </div>
+
+  <div class="stats-marq fade-in-up">
+    <!-- Repeat multiple copies for infinite marquee effect -->
+    <div class="stats-marq-inner">
+      <div class="stat-item-airy">
+        <div class="stat-num-airy">22+</div>
+        <div class="stat-label-airy">Роки на ринку</div>
+      </div>
+      <div class="stat-item-airy">
+        <div class="stat-num-airy">1000+</div>
+        <div class="stat-label-airy">Семінарів</div>
+      </div>
+      <div class="stat-item-airy">
+        <div class="stat-num-airy">Zoom</div>
+        <div class="stat-label-airy">Онлайн формат</div>
+      </div>
+      <div class="stat-item-airy">
+        <div class="stat-num-airy">2000</div>
+        <div class="stat-label-airy">Вартість (грн)</div>
+      </div>
+      <div class="stat-item-airy">
+        <div class="stat-num-airy">22+</div>
+        <div class="stat-label-airy">Роки на ринку</div>
+      </div>
+      <div class="stat-item-airy">
+        <div class="stat-num-airy">1000+</div>
+        <div class="stat-label-airy">Семінарів</div>
+      </div>
+      <div class="stat-item-airy">
+        <div class="stat-num-airy">Zoom</div>
+        <div class="stat-label-airy">Онлайн формат</div>
+      </div>
+      <div class="stat-item-airy">
+        <div class="stat-num-airy">2000</div>
+        <div class="stat-label-airy">Вартість (грн)</div>
+      </div>
+      <div class="stat-item-airy">
+        <div class="stat-num-airy">22+</div>
+        <div class="stat-label-airy">Роки на ринку</div>
+      </div>
+      <div class="stat-item-airy">
+        <div class="stat-num-airy">1000+</div>
+        <div class="stat-label-airy">Семінарів</div>
+      </div>
+      <div class="stat-item-airy">
+        <div class="stat-num-airy">Zoom</div>
+        <div class="stat-label-airy">Онлайн формат</div>
+      </div>
+      <div class="stat-item-airy">
+        <div class="stat-num-airy">2000</div>
+        <div class="stat-label-airy">Вартість (грн)</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container" id="about">
+    <section class="section">
+      <h2 class="fade-in-up">Більше жодних<br>рамок. <strong>Тільки суть.</strong></h2>
+      <div class="features-grid">
+        <!-- [Figma Dev Mode] Text fragmented into punchy, breathable cards -->
+        <div class="air-card fade-in-up delay-100">
+          <div class="icon">🎯</div>
+          <h3>Практичний підхід</h3>
+          <p>Аналізуємо реальні зміни законодавства та їх вплив на промисловість без зайвої "води".</p>
+        </div>
+        <div class="air-card fade-in-up delay-200">
+          <div class="icon">💬</div>
+          <h3>Живий діалог</h3>
+          <p>Надсилайте питання заздалегідь та розбирайте свою конкретну ситуацію під час Zoom-сесії.</p>
+        </div>
+        <div class="air-card fade-in-up delay-300">
+          <div class="icon">💸</div>
+          <h3>Чесна ціна</h3>
+          <p>Повноцінний семінар із сертифікатом всього від 2 000 грн. Інвестуйте у знання, а не у відрядження.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="container" id="seminars">
+    <section class="section">
+      <h2 class="fade-in-up">Дві ідеальні<br><strong>програми.</strong></h2>
+      <div class="seminars-list">
+
+        <!-- [Figma Dev Mode] Auto Layout: Horizontal (Gap 40px), Align Center -->
+        <div class="seminar-row fade-in-up delay-100">
+          <div class="stat-num-airy" style="font-size: 80px; letter-spacing: -4px;">01.</div>
+          <div>
+            <h3 style="font-size: 28px; margin-bottom: 16px;">Охорона атмосферного повітря. ГОУ</h3>
+            <p>Нормативно-правові акти, правила технічної експлуатації установок очищення газу, розбір документації.</p>
+          </div>
+          <div style="text-align: right;">
+            <div style="font-size: 24px; font-weight: 500; margin-bottom: 16px;">2 000 грн</div>
+            <a href="#" class="btn-air btn-lime" style="color: #0F1A13;">Записатись</a>
+          </div>
+        </div>
+
+        <!-- [Figma Dev Mode] Variant: Dark Mode Enabled -->
+        <div class="seminar-row dark fade-in-up delay-200">
+          <div class="stat-num-airy" style="font-size: 80px; color: var(--green-bright); letter-spacing: -4px;">02.
+          </div>
+          <div>
+            <h3 style="font-size: 28px; margin-bottom: 16px;">Природоохоронна діяльність</h3>
+            <p>Організація та управління, поводження з відходами, екологічний контроль та інспектування.</p>
+          </div>
+          <div style="text-align: right;">
+            <div style="font-size: 24px; font-weight: 500; margin-bottom: 16px; color: #fff;">2 200 грн</div>
+            <a href="#" class="btn-air btn-lime" style="color: #0F1A13;">Записатись</a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </div>
+
+  <footer class="section fade-in-up" id="contact">
+    <div class="container">
+      <h2 class="footer-cta">Готові <strong>дихати вільно</strong> в<br>екологічному праві?</h2>
+      <a href="tel:+380972144205" class="btn-air" style="font-size: 20px; padding: 24px 64px;">(097) 214-42-05</a>
+      <div
+        style="margin-top: 80px; color: var(--text-soft); display: flex; flex-wrap: wrap; justify-content: space-between; font-size: 14px; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 40px;">
+        <span>© 2026 КЦ «УкрКонсалтинг». Airborne Design by Nano Banana 2.</span>
+        <span>uktc@ukr.net</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // [Figma Dev Mode] Micro-Interactions Script
+    // Handles the "Fade-in-up" spring animation based on scroll position logic.
+    document.addEventListener("DOMContentLoaded", () => {
+      const elements = document.querySelectorAll('.fade-in-up');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
+
+      elements.forEach(el => observer.observe(el));
+    });
+  </script>
+
+</body>
+
+</html>

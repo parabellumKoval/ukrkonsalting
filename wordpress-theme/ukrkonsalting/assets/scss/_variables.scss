@@ -1,0 +1,69 @@
+// ─── SCSS VARIABLES ───────────────────────────────────────────────────────────
+
+// Color palette (mirrors CSS custom properties)
+$green-deep: #1C3829;
+$green-mid: #2D5A42;
+$green-soft: #4A8060;
+$green-pale: #C8DDD3;
+$green-mist: #EBF3EE;
+$cream: #F7F4EF;
+$white: #FDFCFB;
+$text: #1A1A2A;
+$text-mid: #4A5E55;
+$text-light: #8AA898;
+$border: #DDE8E2;
+$gold: #C9A84C;
+$gold-light: #E8C96A;
+$gold-pale: #FBF2DC;
+
+// Breakpoints
+$bp-sm: 480px;
+$bp-md: 768px;
+$bp-lg: 1024px;
+$bp-xl: 1200px;
+
+// Spacing scale
+$space-xs: 8px;
+$space-sm: 16px;
+$space-md: 24px;
+$space-lg: 48px;
+$space-xl: 64px;
+$space-2xl: 96px;
+
+// Typography
+$font-serif: 'Lora', Georgia, serif;
+$font-sans: 'Outfit', system-ui, sans-serif;
+
+// Radius
+$radius-sm: 8px;
+$radius-md: 14px;
+$radius-lg: 20px;
+$radius-xl: 24px;
+$radius-2xl: 28px;
+$radius-pill: 100px;
+
+// Transitions
+$transition-fast: 0.15s ease;
+$transition-base: 0.25s ease;
+$transition-slow: 0.4s cubic-bezier(.16, 1, .3, 1);
+
+// Export as CSS custom properties
+:root {
+  --green-deep: #{$green-deep};
+  --green-mid: #{$green-mid};
+  --green-soft: #{$green-soft};
+  --green-pale: #{$green-pale};
+  --green-mist: #{$green-mist};
+  --cream: #{$cream};
+  --bg: #{$cream};
+  --white: #{$white};
+  --surface: #{$green-mist};
+  --text: #{$text};
+  --text-mid: #{$text-mid};
+  --text-low: #{$text-light};
+  --text-light: #{$text-light};
+  --border: #{$border};
+  --gold: #{$gold};
+  --gold-light: #{$gold-light};
+  --gold-pale: #{$gold-pale};
+}

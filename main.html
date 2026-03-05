@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>УкрКонсалтинг — Навчальні семінари з охорони довкілля</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --green-deep: #1C3829;
+  --green-mid:  #2D5A42;
+  --green-soft: #4A8060;
+  --green-pale: #C8DDD3;
+  --green-mist: #EBF3EE;
+  --cream:      #F7F4EF;
+  --white:      #FDFCFB;
+  --text:       #1A1A1A;
+  --text-mid:   #4A4A4A;
+  --text-light: #8A9A8E;
+  --border:     #E2EBE6;
+  --gold:       #C9A84C;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background: var(--white);
+  color: var(--text);
+  line-height: 1.6;
+  font-size: 16px;
+  overflow-x: hidden;
+}
+
+/* ─── ANIMATIONS ─── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-8px); }
+}
+@keyframes pulse-ring {
+  0%   { transform: scale(1);   opacity: .5; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+
+.fade-up { animation: fadeUp .7s ease both; }
+.delay-1 { animation-delay: .1s; }
+.delay-2 { animation-delay: .2s; }
+.delay-3 { animation-delay: .3s; }
+.delay-4 { animation-delay: .4s; }
+
+/* ─── NAVBAR ─── */
+nav {
+  position: sticky; top: 0; z-index: 999;
+  background: rgba(253,252,251,0.92);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 48px;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 68px;
+}
+.nav-logo {
+  font-family: 'Lora', serif;
+  font-size: 18px; font-weight: 700;
+  color: var(--green-deep);
+  text-decoration: none;
+  display: flex; align-items: center; gap: 10px;
+}
+.nav-logo-icon {
+  width: 32px; height: 32px;
+  background: var(--green-deep);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+}
+.nav-logo-icon svg { width: 18px; height: 18px; }
+.nav-links { display: flex; align-items: center; gap: 32px; }
+.nav-links a {
+  text-decoration: none; color: var(--text-mid);
+  font-size: 14px; font-weight: 500;
+  transition: color .2s;
+}
+.nav-links a:hover { color: var(--green-deep); }
+.nav-cta {
+  background: var(--green-deep);
+  color: var(--white) !important;
+  padding: 10px 22px; border-radius: 100px;
+  font-size: 14px; font-weight: 500;
+  transition: background .2s, transform .15s !important;
+}
+.nav-cta:hover { background: var(--green-mid) !important; transform: translateY(-1px); }
+
+/* ─── HERO ─── */
+.hero {
+  background: var(--white);
+  padding: 88px 48px 0;
+  max-width: 1200px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 420px;
+  gap: 48px; align-items: center;
+  min-height: 620px;
+}
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--green-mist);
+  color: var(--green-soft);
+  font-size: 13px; font-weight: 500;
+  padding: 6px 14px; border-radius: 100px;
+  margin-bottom: 24px;
+}
+.hero-eyebrow span {
+  width: 6px; height: 6px;
+  background: var(--green-soft); border-radius: 50%;
+}
+.hero h1 {
+  font-family: 'Lora', serif;
+  font-size: clamp(36px, 4.5vw, 56px);
+  font-weight: 700; line-height: 1.12;
+  color: var(--green-deep);
+  margin-bottom: 20px;
+  letter-spacing: -.5px;
+}
+.hero h1 em {
+  font-style: normal;
+  color: var(--green-soft);
+}
+.hero-desc {
+  font-size: 17px; color: var(--text-mid);
+  line-height: 1.7; max-width: 480px;
+  margin-bottom: 36px;
+  font-weight: 300;
+}
+.hero-actions { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--green-deep); color: var(--white);
+  padding: 14px 28px; border-radius: 100px;
+  font-size: 15px; font-weight: 500;
+  text-decoration: none; cursor: pointer; border: none;
+  transition: background .2s, transform .15s, box-shadow .2s;
+  box-shadow: 0 4px 16px rgba(28,56,41,.2);
+}
+.btn-primary:hover { background: var(--green-mid); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(28,56,41,.25); }
+.btn-primary svg { transition: transform .2s; }
+.btn-primary:hover svg { transform: translateX(3px); }
+.btn-ghost {
+  display: inline-flex; align-items: center; gap: 6px;
+  color: var(--text-mid); font-size: 14px; font-weight: 500;
+  text-decoration: none;
+  transition: color .2s;
+}
+.btn-ghost:hover { color: var(--green-deep); }
+
+/* Hero right card */
+.hero-card {
+  background: var(--cream);
+  border-radius: 24px;
+  padding: 32px;
+  position: relative;
+  animation: float 5s ease-in-out infinite;
+}
+.hero-card::before {
+  content: '';
+  position: absolute; inset: -1px;
+  border-radius: 25px;
+  background: linear-gradient(135deg, var(--green-pale), transparent 60%);
+  z-index: -1;
+}
+.hero-card-tag {
+  font-size: 11px; font-weight: 600; letter-spacing: 1.5px;
+  text-transform: uppercase; color: var(--green-soft);
+  margin-bottom: 12px;
+}
+.hero-card h3 {
+  font-family: 'Lora', serif;
+  font-size: 20px; font-weight: 600;
+  color: var(--green-deep); margin-bottom: 20px; line-height: 1.4;
+}
+.hero-card-list { list-style: none; }
+.hero-card-list li {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 10px 0; border-bottom: 1px solid var(--border);
+  font-size: 14px; color: var(--text-mid); line-height: 1.5;
+}
+.hero-card-list li:last-child { border-bottom: none; }
+.hero-card-list .check {
+  width: 20px; height: 20px; flex-shrink: 0;
+  background: var(--green-mist); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  margin-top: 1px;
+}
+.hero-card-price {
+  margin-top: 20px;
+  background: var(--green-deep); border-radius: 14px;
+  padding: 16px 20px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.hero-card-price .price-label { color: var(--green-pale); font-size: 12px; }
+.hero-card-price .price-value {
+  font-family: 'Lora', serif;
+  font-size: 22px; font-weight: 700; color: var(--white);
+}
+.hero-card-price .price-sub { color: var(--green-pale); font-size: 11px; }
+
+/* ─── STATS STRIP ─── */
+.stats-strip {
+  background: var(--green-deep);
+  margin: 64px 0 0;
+  padding: 36px 48px;
+  display: flex; align-items: center; justify-content: center;
+  gap: 0;
+}
+.stat-item {
+  flex: 1; text-align: center;
+  padding: 0 32px;
+  border-right: 1px solid rgba(255,255,255,.12);
+}
+.stat-item:last-child { border-right: none; }
+.stat-num {
+  font-family: 'Lora', serif;
+  font-size: 42px; font-weight: 700; color: var(--white);
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.stat-num sup { font-size: 22px; }
+.stat-label { font-size: 13px; color: var(--green-pale); font-weight: 400; }
+
+/* ─── MARQUEE ─── */
+.marquee-wrap {
+  background: var(--green-mist);
+  padding: 16px 0; overflow: hidden;
+  border-top: 1px solid var(--green-pale);
+  border-bottom: 1px solid var(--green-pale);
+}
+.marquee-track {
+  display: flex; gap: 0;
+  white-space: nowrap;
+  animation: marquee 28s linear infinite;
+}
+.marquee-item {
+  display: inline-flex; align-items: center; gap: 12px;
+  padding: 0 32px;
+  font-size: 13px; font-weight: 500; color: var(--green-mid);
+  letter-spacing: .3px;
+}
+.marquee-dot {
+  width: 5px; height: 5px;
+  background: var(--green-soft); border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* ─── SECTION COMMON ─── */
+.section { padding: 96px 48px; max-width: 1200px; margin: 0 auto; }
+.section-full { padding: 96px 0; }
+
+.section-label {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 12px; font-weight: 600; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--green-soft);
+  margin-bottom: 14px;
+}
+.section-label::before {
+  content: '';
+  width: 20px; height: 2px; background: var(--green-soft);
+}
+.section-title {
+  font-family: 'Lora', serif;
+  font-size: clamp(28px, 3.5vw, 40px);
+  font-weight: 700; line-height: 1.2;
+  color: var(--green-deep); margin-bottom: 14px;
+}
+.section-sub {
+  font-size: 16px; color: var(--text-mid);
+  font-weight: 300; max-width: 540px; line-height: 1.7;
+}
+
+/* ─── WHY US ─── */
+.why-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px; margin-top: 56px;
+}
+.why-card {
+  background: var(--cream);
+  border-radius: 20px; padding: 32px 24px;
+  border: 1px solid var(--border);
+  transition: transform .25s, box-shadow .25s;
+  position: relative; overflow: hidden;
+}
+.why-card::after {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--green-soft), var(--green-pale));
+  transform: scaleX(0); transform-origin: left;
+  transition: transform .3s;
+}
+.why-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(28,56,41,.08); }
+.why-card:hover::after { transform: scaleX(1); }
+.why-icon {
+  width: 48px; height: 48px;
+  background: var(--green-mist); border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 20px;
+  font-size: 22px;
+}
+.why-card h4 {
+  font-family: 'Lora', serif;
+  font-size: 17px; font-weight: 600;
+  color: var(--green-deep); margin-bottom: 10px;
+}
+.why-card p { font-size: 14px; color: var(--text-mid); line-height: 1.6; font-weight: 300; }
+
+/* ─── SEMINARS ─── */
+.seminars-bg { background: var(--cream); }
+.seminars-inner { max-width: 1200px; margin: 0 auto; padding: 96px 48px; }
+
+.seminars-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 56px; }
+
+.seminar-card {
+  background: var(--white);
+  border-radius: 24px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  transition: transform .25s, box-shadow .25s;
+  display: flex; flex-direction: column;
+}
+.seminar-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(28,56,41,.1); }
+
+.seminar-card-top {
+  padding: 36px 36px 28px;
+  background: var(--green-deep);
+  position: relative; overflow: hidden;
+}
+.seminar-card-top::before {
+  content: '';
+  position: absolute; top: -40px; right: -40px;
+  width: 140px; height: 140px;
+  background: rgba(255,255,255,.04);
+  border-radius: 50%;
+}
+.seminar-card-top::after {
+  content: '';
+  position: absolute; bottom: -20px; left: 40px;
+  width: 80px; height: 80px;
+  background: rgba(255,255,255,.03);
+  border-radius: 50%;
+}
+.seminar-num {
+  font-family: 'Lora', serif;
+  font-size: 72px; font-weight: 700;
+  color: rgba(255,255,255,.08);
+  line-height: 1; position: absolute;
+  right: 28px; top: 16px;
+  pointer-events: none;
+}
+.seminar-tag {
+  display: inline-block;
+  background: rgba(255,255,255,.12);
+  color: rgba(255,255,255,.8);
+  font-size: 11px; font-weight: 500; letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 5px 12px; border-radius: 100px;
+  margin-bottom: 16px;
+}
+.seminar-card-top h3 {
+  font-family: 'Lora', serif;
+  font-size: 20px; font-weight: 600;
+  color: var(--white); line-height: 1.35;
+  position: relative; z-index: 1;
+}
+.seminar-card-body { padding: 28px 36px 36px; flex: 1; display: flex; flex-direction: column; }
+.seminar-topics { list-style: none; margin-bottom: 28px; flex: 1; }
+.seminar-topics li {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 8px 0; border-bottom: 1px solid var(--border);
+  font-size: 14px; color: var(--text-mid); line-height: 1.5;
+}
+.seminar-topics li:last-child { border-bottom: none; }
+.seminar-topics .dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--green-soft); flex-shrink: 0; margin-top: 6px;
+}
+.seminar-footer {
+  display: flex; align-items: center; justify-content: space-between;
+  padding-top: 20px; border-top: 1px solid var(--border);
+}
+.seminar-price {
+  font-family: 'Lora', serif;
+  font-size: 26px; font-weight: 700; color: var(--green-deep);
+}
+.seminar-price small { font-size: 13px; color: var(--text-light); font-family: 'Outfit', sans-serif; font-weight: 400; }
+.seminar-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--green-deep); color: var(--white);
+  padding: 11px 22px; border-radius: 100px;
+  font-size: 14px; font-weight: 500;
+  text-decoration: none; border: none; cursor: pointer;
+  transition: background .2s, transform .15s;
+}
+.seminar-btn:hover { background: var(--green-mid); transform: translateY(-1px); }
+
+/* ─── FORMAT SECTION ─── */
+.format-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 48px; align-items: center;
+  margin-top: 56px;
+}
+.format-visual {
+  background: var(--green-deep);
+  border-radius: 24px; padding: 40px;
+  position: relative; overflow: hidden;
+}
+.format-visual::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(circle at 80% 20%, rgba(74,128,96,.3), transparent 55%);
+}
+.zoom-badge {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: rgba(255,255,255,.1);
+  border: 1px solid rgba(255,255,255,.15);
+  border-radius: 14px; padding: 12px 18px;
+  margin-bottom: 24px;
+}
+.zoom-badge .zoom-icon {
+  width: 32px; height: 32px; background: #2D8CFF;
+  border-radius: 8px; display: flex; align-items: center;
+  justify-content: center; font-size: 14px;
+}
+.zoom-badge span { color: var(--white); font-size: 14px; font-weight: 500; }
+.format-visual h3 {
+  font-family: 'Lora', serif;
+  font-size: 22px; font-weight: 600;
+  color: var(--white); margin-bottom: 28px; line-height: 1.35;
+  position: relative;
+}
+.format-pills { display: flex; flex-wrap: wrap; gap: 8px; position: relative; }
+.pill {
+  background: rgba(255,255,255,.1);
+  border: 1px solid rgba(255,255,255,.12);
+  color: rgba(255,255,255,.85); border-radius: 100px;
+  padding: 7px 16px; font-size: 13px;
+}
+
+.format-list { list-style: none; }
+.format-list li {
+  display: flex; align-items: flex-start; gap: 14px;
+  padding: 18px 0; border-bottom: 1px solid var(--border);
+}
+.format-list li:last-child { border-bottom: none; }
+.format-list .fi {
+  width: 40px; height: 40px; flex-shrink: 0;
+  background: var(--green-mist); border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+}
+.format-list .ft { }
+.format-list .ft strong { display: block; font-size: 15px; color: var(--green-deep); margin-bottom: 3px; }
+.format-list .ft span { font-size: 13px; color: var(--text-light); font-weight: 300; }
+
+/* ─── TESTIMONIALS ─── */
+.testimonials-bg { background: var(--white); }
+.testimonials-inner { max-width: 1200px; margin: 0 auto; padding: 96px 48px; }
+
+.testimonials-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 20px; margin-top: 56px;
+}
+.testi-card {
+  background: var(--cream);
+  border-radius: 20px; padding: 28px;
+  border: 1px solid var(--border);
+  transition: transform .25s;
+}
+.testi-card:hover { transform: translateY(-3px); }
+.testi-stars { color: var(--gold); font-size: 14px; margin-bottom: 16px; letter-spacing: 2px; }
+.testi-text {
+  font-size: 14px; color: var(--text-mid);
+  line-height: 1.75; font-weight: 300;
+  margin-bottom: 20px;
+  font-style: italic;
+}
+.testi-author {
+  display: flex; align-items: center; gap: 12px;
+  padding-top: 16px; border-top: 1px solid var(--border);
+}
+.testi-avatar {
+  width: 38px; height: 38px; border-radius: 50%;
+  background: var(--green-mist);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Lora', serif;
+  font-size: 14px; font-weight: 700; color: var(--green-soft);
+  flex-shrink: 0;
+}
+.testi-name { font-size: 14px; font-weight: 600; color: var(--green-deep); }
+.testi-role { font-size: 12px; color: var(--text-light); }
+
+/* ─── CTA BANNER ─── */
+.cta-banner {
+  max-width: 1200px; margin: 0 auto 96px;
+  padding: 0 48px;
+}
+.cta-inner {
+  background: var(--green-deep);
+  border-radius: 28px; padding: 64px 64px;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 32px; position: relative; overflow: hidden;
+}
+.cta-inner::before {
+  content: '';
+  position: absolute; top: -60px; right: -60px;
+  width: 240px; height: 240px;
+  background: radial-gradient(circle, rgba(74,128,96,.35), transparent 70%);
+}
+.cta-inner::after {
+  content: '';
+  position: absolute; bottom: -40px; left: 30%;
+  width: 160px; height: 160px;
+  background: radial-gradient(circle, rgba(200,221,211,.08), transparent 70%);
+}
+.cta-text { position: relative; z-index: 1; }
+.cta-text h2 {
+  font-family: 'Lora', serif;
+  font-size: clamp(22px, 2.5vw, 32px);
+  font-weight: 700; color: var(--white);
+  margin-bottom: 10px; line-height: 1.25;
+}
+.cta-text p { color: var(--green-pale); font-size: 15px; font-weight: 300; }
+.cta-actions { display: flex; align-items: center; gap: 12px; flex-shrink: 0; position: relative; z-index: 1; }
+.btn-light {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--white); color: var(--green-deep);
+  padding: 14px 28px; border-radius: 100px;
+  font-size: 15px; font-weight: 600;
+  text-decoration: none; border: none; cursor: pointer;
+  transition: opacity .2s, transform .15s;
+}
+.btn-light:hover { opacity: .92; transform: translateY(-2px); }
+.btn-outline-light {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: transparent;
+  border: 1.5px solid rgba(255,255,255,.3);
+  color: rgba(255,255,255,.85);
+  padding: 13px 24px; border-radius: 100px;
+  font-size: 14px; font-weight: 500;
+  text-decoration: none; cursor: pointer;
+  transition: border-color .2s, background .2s;
+}
+.btn-outline-light:hover { border-color: rgba(255,255,255,.6); background: rgba(255,255,255,.05); }
+
+/* ─── CONTACT STRIP ─── */
+.contact-strip {
+  background: var(--cream);
+  padding: 56px 48px;
+  border-top: 1px solid var(--border);
+}
+.contact-strip-inner {
+  max-width: 1200px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between; gap: 32px;
+}
+.contact-info { display: flex; align-items: center; gap: 40px; }
+.contact-item { display: flex; align-items: center; gap: 10px; }
+.contact-item-icon {
+  width: 40px; height: 40px; background: var(--green-mist);
+  border-radius: 12px; display: flex; align-items: center;
+  justify-content: center; font-size: 16px; flex-shrink: 0;
+}
+.contact-item-label { font-size: 11px; color: var(--text-light); margin-bottom: 2px; }
+.contact-item-value { font-size: 14px; font-weight: 500; color: var(--green-deep); }
+
+/* ─── FOOTER ─── */
+footer {
+  background: var(--green-deep);
+  padding: 56px 48px 32px;
+}
+.footer-inner {
+  max-width: 1200px; margin: 0 auto;
+  display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px;
+  padding-bottom: 40px; border-bottom: 1px solid rgba(255,255,255,.1);
+}
+.footer-brand h4 {
+  font-family: 'Lora', serif;
+  font-size: 18px; font-weight: 700; color: var(--white);
+  margin-bottom: 10px;
+}
+.footer-brand p {
+  font-size: 13px; color: var(--green-pale);
+  line-height: 1.7; font-weight: 300; max-width: 240px;
+}
+.footer-col h5 {
+  font-size: 12px; font-weight: 600; letter-spacing: 1.5px;
+  text-transform: uppercase; color: var(--green-pale);
+  margin-bottom: 16px;
+}
+.footer-col a, .footer-col p {
+  display: block; font-size: 13px; color: rgba(255,255,255,.6);
+  text-decoration: none; margin-bottom: 10px;
+  transition: color .2s; font-weight: 300;
+}
+.footer-col a:hover { color: var(--white); }
+.footer-bottom {
+  max-width: 1200px; margin: 28px auto 0;
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 12px; color: rgba(255,255,255,.35);
+}
+
+/* ─── SCROLL FORM PANEL (simulated) ─── */
+/* ─── RESPONSIVE ─── */
+@media (max-width: 1024px) {
+  .why-grid { grid-template-columns: repeat(2, 1fr); }
+  .seminars-grid { grid-template-columns: 1fr; }
+  .format-grid { grid-template-columns: 1fr; }
+  .testimonials-grid { grid-template-columns: 1fr 1fr; }
+  .footer-inner { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 768px) {
+  nav { padding: 0 20px; }
+  .nav-links { display: none; }
+  .hero { grid-template-columns: 1fr; padding: 48px 20px 0; }
+  .hero-card { display: none; }
+  .stats-strip { flex-direction: column; gap: 32px; padding: 36px 20px; }
+  .stat-item { border-right: none; border-bottom: 1px solid rgba(255,255,255,.12); padding: 0 0 24px; }
+  .stat-item:last-child { border-bottom: none; padding-bottom: 0; }
+  .section { padding: 64px 20px; }
+  .seminars-inner { padding: 64px 20px; }
+  .testimonials-inner { padding: 64px 20px; }
+  .testimonials-grid { grid-template-columns: 1fr; }
+  .why-grid { grid-template-columns: 1fr; }
+  .cta-inner { flex-direction: column; padding: 40px 28px; }
+  .contact-strip { padding: 40px 20px; }
+  .contact-strip-inner { flex-direction: column; gap: 24px; }
+  .contact-info { flex-direction: column; align-items: flex-start; gap: 20px; }
+  footer { padding: 48px 20px 28px; }
+  .footer-inner { grid-template-columns: 1fr; gap: 32px; }
+  .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
+  .cta-banner { padding: 0 20px; margin-bottom: 64px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ NAVBAR ═══ -->
+<nav>
+  <a href="#" class="nav-logo">
+    <div class="nav-logo-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round">
+        <path d="M12 2C6 2 3 7 3 12c0 3 2 6 5 8"/>
+        <path d="M12 2c6 0 9 5 9 10 0 3-2 6-5 8"/>
+        <path d="M7 20c1.5-2 3.5-3 5-3s3.5 1 5 3"/>
+        <circle cx="12" cy="12" r="3"/>
+      </svg>
+    </div>
+    УкрКонсалтинг
+  </a>
+  <div class="nav-links">
+    <a href="#">Головна</a>
+    <a href="#">Семінар 1</a>
+    <a href="#">Семінар 2</a>
+    <a href="#">Блог</a>
+    <a href="#">Контакти</a>
+    <a href="#" class="nav-cta">Записатись</a>
+  </div>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<div style="max-width:1200px; margin:0 auto;">
+  <div class="hero fade-up">
+    <div>
+      <div class="hero-eyebrow fade-up delay-1">
+        <span></span>
+        Онлайн-семінари · Zoom · Сертифікат
+      </div>
+      <h1 class="fade-up delay-1">
+        Навчання з<br>
+        <em>охорони довкілля</em><br>
+        для фахівців
+      </h1>
+      <p class="hero-desc fade-up delay-2">
+        Практичні семінари для екологів, головних інженерів та відповідальних за охорону навколишнього середовища. 22 роки досвіду, 1000+ проведених заходів.
+      </p>
+      <div class="hero-actions fade-up delay-3">
+        <a href="#" class="btn-primary">
+          Переглянути програми
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <a href="#" class="btn-ghost">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.63 19.79 19.79 0 01.5 1.02 2 2 0 012.5 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.18 6.18l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+          (097) 214-42-05
+        </a>
+      </div>
+    </div>
+
+    <div class="hero-card fade-up delay-2">
+      <div class="hero-card-tag">Найближчий семінар</div>
+      <h3>Охорона атмосферного повітря. Правила ГОУ</h3>
+      <ul class="hero-card-list">
+        <li>
+          <div class="check">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#2D5A42" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          Нормативно-правова база 2024–2025
+        </li>
+        <li>
+          <div class="check">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#2D5A42" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          Практичні рекомендації по ГОУ
+        </li>
+        <li>
+          <div class="check">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#2D5A42" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          Відповіді на питання учасників
+        </li>
+        <li>
+          <div class="check">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#2D5A42" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          Методичні матеріали + сертифікат
+        </li>
+      </ul>
+      <div class="hero-card-price">
+        <div>
+          <div class="price-label">Вартість участі</div>
+          <div class="price-value">2 000 грн</div>
+          <div class="price-sub">ПДВ не передбачений</div>
+        </div>
+        <div style="background:rgba(255,255,255,.12);border-radius:10px;padding:8px 14px;text-align:center;">
+          <div style="font-size:11px;color:var(--green-pale);margin-bottom:2px;">Формат</div>
+          <div style="font-size:13px;color:white;font-weight:500;">Zoom</div>
+          <div style="font-size:11px;color:var(--green-pale);">онлайн</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ STATS ═══ -->
+<div class="stats-strip">
+  <div class="stat-item">
+    <div class="stat-num">22<sup>+</sup></div>
+    <div class="stat-label">роки на ринку</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">1000<sup>+</sup></div>
+    <div class="stat-label">проведених семінарів</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">2</div>
+    <div class="stat-label">спеціалізовані програми</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">2000</div>
+    <div class="stat-label">грн — доступна ціна</div>
+  </div>
+</div>
+
+<!-- ═══ MARQUEE ═══ -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <div class="marquee-item"><div class="marquee-dot"></div>Охорона атмосферного повітря</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Поводження з відходами</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Газоочисне обладнання ГОУ</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Природоохоронна діяльність</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Правове регулювання</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Корпоративне навчання</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Онлайн-семінари Zoom</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Підвищення кваліфікації</div>
+    <!-- duplicate for seamless loop -->
+    <div class="marquee-item"><div class="marquee-dot"></div>Охорона атмосферного повітря</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Поводження з відходами</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Газоочисне обладнання ГОУ</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Природоохоронна діяльність</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Правове регулювання</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Корпоративне навчання</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Онлайн-семінари Zoom</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Підвищення кваліфікації</div>
+  </div>
+</div>
+
+<!-- ═══ WHY US ═══ -->
+<div class="section">
+  <div class="section-label">Чому обирають нас</div>
+  <div class="section-title">Максимум практики,<br>мінімум часу</div>
+  <p class="section-sub">Ми не читаємо теорію заради теорії. Кожен семінар — конкретні відповіді на реальні питання вашого підприємства.</p>
+
+  <div class="why-grid">
+    <div class="why-card">
+      <div class="why-icon">🎯</div>
+      <h4>Практична спрямованість</h4>
+      <p>Тільки актуальні зміни законодавства та їх застосування на реальних прикладах промислових підприємств.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-icon">💬</div>
+      <h4>Відповіді на ваші питання</h4>
+      <p>Можна надіслати питання заздалегідь на email або задати напряму під час семінару. Розбираємо вашу конкретну ситуацію.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-icon">💰</div>
+      <h4>Доступна ціна</h4>
+      <p>Від 2 000 грн за повноцінний семінар з матеріалами та сертифікатом. Без ПДВ. Краще ніж у конкурентів.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-icon">🏠</div>
+      <h4>Зручний онлайн-формат</h4>
+      <p>Участь з будь-якого місця через Zoom. Не потрібні відрядження — заощаджуєте час і кошти компанії.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SEMINARS ═══ -->
+<div class="seminars-bg">
+  <div class="seminars-inner">
+    <div class="section-label">Програми навчання</div>
+    <div class="section-title">Два спеціалізовані<br>семінари</div>
+    <p class="section-sub">Кожна програма — поглиблений розгляд окремого напрямку природоохоронного законодавства та практики.</p>
+
+    <div class="seminars-grid">
+      <!-- Seminar 1 -->
+      <div class="seminar-card">
+        <div class="seminar-card-top">
+          <div class="seminar-num">01</div>
+          <div class="seminar-tag">Атмосферне повітря · ГОУ</div>
+          <h3>Нормативно-правові акти з охорони атмосферного повітря. Правила технічної експлуатації ГОУ</h3>
+        </div>
+        <div class="seminar-card-body">
+          <ul class="seminar-topics">
+            <li><div class="dot"></div>Чинне законодавство про охорону атмосферного повітря: огляд змін</li>
+            <li><div class="dot"></div>Правила технічної експлуатації установок очищення газу (ГОУ)</li>
+            <li><div class="dot"></div>Вимоги до документації та звітності підприємства</li>
+            <li><div class="dot"></div>Відповідальність за порушення нормативів</li>
+            <li><div class="dot"></div>Практичні рекомендації та розбір кейсів</li>
+          </ul>
+          <div class="seminar-footer">
+            <div>
+              <div class="seminar-price">2 000 грн</div>
+              <div style="font-size:12px;color:var(--text-light);">з матеріалами та сертифікатом</div>
+            </div>
+            <a href="#" class="seminar-btn">
+              Детальніше
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Seminar 2 -->
+      <div class="seminar-card">
+        <div class="seminar-card-top" style="background: var(--green-mid);">
+          <div class="seminar-num">02</div>
+          <div class="seminar-tag">Природоохоронна діяльність</div>
+          <h3>Організація та управління природоохоронною діяльністю. Основи правового регулювання</h3>
+        </div>
+        <div class="seminar-card-body">
+          <ul class="seminar-topics">
+            <li><div class="dot"></div>Система управління природоохоронною діяльністю підприємства</li>
+            <li><div class="dot"></div>Правове регулювання охорони навколишнього середовища в Україні</li>
+            <li><div class="dot"></div>Поводження з відходами: вимоги та документація</li>
+            <li><div class="dot"></div>Екологічний контроль та інспектування</li>
+            <li><div class="dot"></div>Практичні поради для еколога підприємства</li>
+          </ul>
+          <div class="seminar-footer">
+            <div>
+              <div class="seminar-price">2 200 грн</div>
+              <div style="font-size:12px;color:var(--text-light);">з матеріалами та сертифікатом</div>
+            </div>
+            <a href="#" class="seminar-btn">
+              Детальніше
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ FORMAT ═══ -->
+<div class="section">
+  <div class="section-label">Формат та умови</div>
+  <div class="section-title">Як проходить навчання</div>
+  <p class="section-sub">Все організовано для максимальної зручності учасників без зайвих витрат.</p>
+
+  <div class="format-grid">
+    <div class="format-visual">
+      <div class="zoom-badge">
+        <div class="zoom-icon">📹</div>
+        <span>Проводимо через Zoom</span>
+      </div>
+      <h3>Онлайн-семінари в невеликих групах — зручно та ефективно</h3>
+      <div class="format-pills">
+        <span class="pill">🗓 По мірі набору групи</span>
+        <span class="pill">📍 Вся Україна</span>
+        <span class="pill">📎 Електронні матеріали</span>
+        <span class="pill">🎓 Сертифікат</span>
+        <span class="pill">💬 Q&A сесія</span>
+        <span class="pill">🏢 Корпоративний формат</span>
+      </div>
+    </div>
+
+    <ul class="format-list">
+      <li>
+        <div class="fi">📋</div>
+        <div class="ft">
+          <strong>Методичні матеріали</strong>
+          <span>Всі учасники отримують матеріали в електронному або друкованому вигляді (за бажанням)</span>
+        </div>
+      </li>
+      <li>
+        <div class="fi">🎓</div>
+        <div class="ft">
+          <strong>Сертифікат про участь</strong>
+          <span>Видається після завершення навчання. Підтверджує підвищення кваліфікації</span>
+        </div>
+      </li>
+      <li>
+        <div class="fi">💬</div>
+        <div class="ft">
+          <strong>Консультації</strong>
+          <span>Включаючи особисті консультації щодо питань конкретного підприємства</span>
+        </div>
+      </li>
+      <li>
+        <div class="fi">🏭</div>
+        <div class="ft">
+          <strong>Корпоративне навчання</strong>
+          <span>Замовте семінар для своїх фахівців — онлайн або з виїздом на підприємство</span>
+        </div>
+      </li>
+      <li>
+        <div class="fi">📨</div>
+        <div class="ft">
+          <strong>Питання заздалегідь</strong>
+          <span>Надсилайте питання на email до початку семінару — лектор розбере кожне</span>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<!-- ═══ TESTIMONIALS ═══ -->
+<div class="testimonials-bg">
+  <div class="testimonials-inner">
+    <div class="section-label">Відгуки учасників</div>
+    <div class="section-title">Що кажуть наші слухачі</div>
+
+    <div class="testimonials-grid">
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">«Семінар дуже структурований і практичний. Всі зміни законодавства пояснені зрозумілою мовою. Матеріали залишаються актуальним довідником у роботі.»</p>
+        <div class="testi-author">
+          <div class="testi-avatar">О</div>
+          <div>
+            <div class="testi-name">Оксана В.</div>
+            <div class="testi-role">Еколог, металургійне підприємство</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">«Нарешті семінар, де можна задати конкретні питання про своє підприємство і отримати реальну відповідь, а не загальні фрази. Буду рекомендувати колегам.»</p>
+        <div class="testi-author">
+          <div class="testi-avatar">А</div>
+          <div>
+            <div class="testi-name">Андрій К.</div>
+            <div class="testi-role">Головний інженер, хімічний завод</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">«Зручний формат, не потрібно нікуди їхати. Ціна дуже доступна порівняно з іншими. Отримала сертифікат і свіжі матеріали одразу після семінару.»</p>
+        <div class="testi-author">
+          <div class="testi-avatar">Н</div>
+          <div>
+            <div class="testi-name">Наталія М.</div>
+            <div class="testi-role">Відповідальна за охорону довкілля</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ CTA BANNER ═══ -->
+<div class="cta-banner">
+  <div class="cta-inner">
+    <div class="cta-text">
+      <h2>Запишіться на наступний<br>семінар вже зараз</h2>
+      <p>Залиште заявку — ми повідомимо про дату наступної групи та надішлемо програму</p>
+    </div>
+    <div class="cta-actions">
+      <a href="#" class="btn-light">
+        Залишити заявку
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="tel:+380972144205" class="btn-outline-light">
+        📞 (097) 214-42-05
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ CONTACT STRIP ═══ -->
+<div class="contact-strip">
+  <div class="contact-strip-inner">
+    <div class="contact-info">
+      <div class="contact-item">
+        <div class="contact-item-icon">📞</div>
+        <div>
+          <div class="contact-item-label">Телефон</div>
+          <div class="contact-item-value">(097) 214-42-05</div>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-item-icon">✉️</div>
+        <div>
+          <div class="contact-item-label">Email</div>
+          <div class="contact-item-value">uktc@ukr.net</div>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-item-icon">💬</div>
+        <div>
+          <div class="contact-item-label">Месенджери</div>
+          <div class="contact-item-value">Telegram · Viber</div>
+        </div>
+      </div>
+    </div>
+    <div style="font-size:13px; color:var(--text-light); text-align:right;">
+      <div style="margin-bottom:4px;">Відповідаємо Пн–Пт</div>
+      <div style="color:var(--green-soft); font-weight:500;">Корпоративне навчання на замовлення</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <h4>КЦ «УкрКонсалтинг»</h4>
+      <p>Консалтинговий центр. Спеціалізація — навчання та підвищення кваліфікації фахівців з охорони навколишнього середовища.</p>
+    </div>
+    <div class="footer-col">
+      <h5>Навчання</h5>
+      <a href="#">Семінар 1 — Охорона атмосфери</a>
+      <a href="#">Семінар 2 — Природоохоронна діяльність</a>
+      <a href="#">Корпоративне навчання</a>
+    </div>
+    <div class="footer-col">
+      <h5>Компанія</h5>
+      <a href="#">Про нас</a>
+      <a href="#">Блог</a>
+      <a href="#">Контакти</a>
+    </div>
+    <div class="footer-col">
+      <h5>Контакти</h5>
+      <p>(097) 214-42-05</p>
+      <p>uktc@ukr.net</p>
+      <p style="margin-top:12px; font-size:12px; opacity:.5;">Пн–Пт, 9:00–18:00</p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 КЦ «УкрКонсалтинг». Всі права захищені.</span>
+    <span>Навчання з охорони довкілля · Онлайн-семінари · Україна</span>
+  </div>
+</footer>
+
+</body>
+</html>

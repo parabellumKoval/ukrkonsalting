@@ -1,0 +1,226 @@
+// ─── PROGRAM ACCORDION ────────────────────────────────────────────────────────
+
+.program-bg {
+  background: var(--white);
+}
+
+.program-stack {
+  margin-top: 56px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.prog-item {
+  background: var(--bg);
+  border: 1.5px solid var(--border);
+  border-radius: $radius-lg;
+  overflow: hidden;
+  transition: border-color $transition-base, box-shadow $transition-base;
+
+  &.open {
+    border-color: rgba(201, 168, 76, .45);
+    box-shadow: 0 6px 28px rgba(28, 56, 41, .08);
+    background: var(--white);
+  }
+}
+
+.prog-trigger {
+  width: 100%;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 26px 30px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  text-align: left;
+
+  @include respond-to('md') {
+    padding: 20px;
+  }
+}
+
+.prog-badge {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  background: var(--green-deep);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: $font-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--gold-light);
+  transition: background $transition-fast;
+
+  .prog-item.open & {
+    background: var(--gold);
+    color: var(--green-deep);
+  }
+}
+
+.prog-label {
+  flex: 1;
+}
+
+.prog-theme {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-low);
+  margin-bottom: 3px;
+
+  .prog-item.open & {
+    color: var(--gold);
+  }
+}
+
+.prog-heading {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--green-deep);
+  line-height: 1.35;
+}
+
+.prog-chevron {
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  background: var(--border);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s, background $transition-fast;
+
+  .prog-item.open & {
+    transform: rotate(180deg);
+    background: var(--gold-pale);
+  }
+}
+
+.prog-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s cubic-bezier(.16, 1, .3, 1), padding 0.35s;
+  padding: 0 30px;
+
+  .prog-item.open & {
+    max-height: 500px;
+    padding: 0 30px 30px;
+  }
+
+  @include respond-to('md') {
+    .prog-item.open & {
+      padding: 0 20px 22px;
+    }
+  }
+
+  ul li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 16px;
+    color: var(--text-mid);
+    line-height: 1.55;
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+}
+
+.prog-dot {
+  width: 7px;
+  height: 7px;
+  background: var(--gold);
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 7px;
+}
+
+.prog-note {
+  font-size: 13px;
+  color: var(--text-low);
+  font-style: italic;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+
+// ─── FAQ ACCORDION ────────────────────────────────────────────────────────────
+
+.faq-stack {
+  margin-top: 52px;
+  display: flex;
+  flex-direction: column;
+}
+
+.faq-item {
+  border-bottom: 1px solid var(--border);
+
+  &:first-child {
+    border-top: 1px solid var(--border);
+  }
+}
+
+.faq-trigger {
+  width: 100%;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 24px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  text-align: left;
+}
+
+.faq-q-text {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--green-deep);
+  line-height: 1.4;
+}
+
+.faq-icon {
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  background: var(--surface);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: var(--text-mid);
+  font-weight: 300;
+  transition: transform 0.3s, background $transition-fast;
+
+  .faq-item.open & {
+    transform: rotate(45deg);
+    background: var(--gold-pale);
+    color: var(--green-deep);
+  }
+}
+
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s cubic-bezier(.16, 1, .3, 1), padding 0.3s;
+  font-size: 16px;
+  color: var(--text-mid);
+  line-height: 1.75;
+
+  .faq-item.open & {
+    max-height: 300px;
+    padding-bottom: 22px;
+  }
+}

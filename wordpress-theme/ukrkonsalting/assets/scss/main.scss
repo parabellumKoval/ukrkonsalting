@@ -1,0 +1,20 @@
+// ─── MAIN SCSS ENTRY POINT ────────────────────────────────────────────────────
+// Import order: variables → mixins → reset → base → components → pages
+
+// 1. Foundation
+@import 'variables';
+@import 'mixins';
+@import 'reset';
+@import 'typography';
+@import 'animations';
+
+// 2. Components
+@import 'components/buttons';
+@import 'components/navbar';
+@import 'components/hero';
+@import 'components/stats-marquee';
+@import 'components/cards';
+@import 'components/accordions';
+@import 'components/forms';
+@import 'components/sections';
+@import 'components/footer-blog';

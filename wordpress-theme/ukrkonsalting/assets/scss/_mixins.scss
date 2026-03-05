@@ -1,0 +1,125 @@
+// ─── MIXINS ───────────────────────────────────────────────────────────────────
+
+// Responsive breakpoints
+@mixin respond-to($bp) {
+  @if $bp =='sm' {
+    @media (max-width: #{$bp-sm}) {
+      @content;
+    }
+  }
+
+  @else if $bp =='md' {
+    @media (max-width: #{$bp-md}) {
+      @content;
+    }
+  }
+
+  @else if $bp =='lg' {
+    @media (max-width: #{$bp-lg}) {
+      @content;
+    }
+  }
+
+  @else if $bp =='xl' {
+    @media (max-width: #{$bp-xl}) {
+      @content;
+    }
+  }
+}
+
+// Font smoothing
+@mixin smooth {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// Flexbox helpers
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@mixin flex-start {
+  display: flex;
+  align-items: flex-start;
+}
+
+// Truncate text
+@mixin truncate($lines: 3) {
+  display: -webkit-box;
+  -webkit-line-clamp: $lines;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+// Section container
+@mixin section-padding($v: 96px, $h: 48px) {
+  padding: $v $h;
+  max-width: $bp-xl;
+  margin: 0 auto;
+
+  @include respond-to('md') {
+    padding: 64px 20px;
+  }
+}
+
+// Card hover lift
+@mixin card-hover($shadow: rgba(28, 56, 41, .08)) {
+  transition: transform $transition-base, box-shadow $transition-base;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px $shadow;
+  }
+}
+
+// Section label (uppercase pre-title)
+@mixin section-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: $green-soft;
+  margin-bottom: 14px;
+
+  &::before {
+    content: '';
+    width: 20px;
+    height: 2px;
+    background: $green-soft;
+    border-radius: 2px;
+  }
+}
+
+// Gradient underline on hover (bottom strip)
+@mixin bottom-highlight {
+  position: relative;
+  overflow: hidden;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, $green-soft, $green-pale);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s;
+  }
+
+  &:hover::after {
+    transform: scaleX(1);
+  }
+}

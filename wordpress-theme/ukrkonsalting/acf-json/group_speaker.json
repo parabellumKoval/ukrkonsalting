@@ -1,0 +1,47 @@
+[
+  {
+    "key": "group_speaker_fields",
+    "title": "Поля преподавателя",
+    "fields": [
+      {
+        "key": "field_speaker_org_entity",
+        "label": "Организация / должность",
+        "name": "speaker_org",
+        "type": "text"
+      },
+      {
+        "key": "field_speaker_bio_entity",
+        "label": "Биография",
+        "name": "speaker_bio",
+        "type": "textarea",
+        "rows": 4
+      },
+      {
+        "key": "field_speaker_tags_entity",
+        "label": "Теги преподавателя",
+        "name": "speaker_tags",
+        "type": "repeater",
+        "sub_fields": [
+          {
+            "key": "field_speaker_tag_entity_text",
+            "label": "Тег",
+            "name": "tag",
+            "type": "text"
+          }
+        ]
+      }
+    ],
+    "location": [
+      [
+        {
+          "param": "post_type",
+          "operator": "==",
+          "value": "speaker"
+        }
+      ]
+    ],
+    "position": "normal",
+    "style": "default",
+    "active": true
+  }
+]

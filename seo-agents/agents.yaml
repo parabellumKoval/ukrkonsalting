@@ -1,0 +1,99 @@
+project: ukrkonsalting
+objective: "SEO growth via factually accurate blog content"
+
+models:
+  advanced: openai-codex/gpt-5.3-codex
+  medium: openai/gpt-4.1-mini
+  low: nvidia/moonshotai/kimi-k2.5
+
+global_rules:
+  - "No fabricated facts"
+  - "Every factual claim must include a source URL"
+  - "If source confidence < threshold, escalate to verifier"
+  - "No publish without verifier PASS"
+
+agents:
+  - id: chief_seo_strategist
+    model_tier: advanced
+    prompt: prompts/chief_seo_strategist.md
+    input: [business_context, existing_pages, target_geo]
+    output: [content_clusters, monthly_plan, internal_link_map]
+
+  - id: keyword_miner
+    model_tier: low
+    prompt: prompts/keyword_miner.md
+    input: [cluster]
+    output: [keywords, intent_map, priority_score]
+
+  - id: serp_analyst
+    model_tier: medium
+    prompt: prompts/serp_analyst.md
+    input: [keyword_list]
+    output: [serp_brief, heading_outline, competing_patterns]
+
+  - id: fact_researcher
+    model_tier: medium
+    prompt: prompts/fact_researcher.md
+    input: [serp_brief, outline]
+    output: [research_pack, claim_source_table]
+
+  - id: seo_writer
+    model_tier: medium
+    prompt: prompts/seo_writer.md
+    input: [outline, research_pack]
+    output: [draft_article]
+
+  - id: fact_verifier
+    model_tier: advanced
+    prompt: prompts/fact_verifier.md
+    input: [draft_article, claim_source_table]
+    output: [verification_report, verdict]
+
+  - id: editor_eeat
+    model_tier: advanced
+    prompt: prompts/editor_eeat.md
+    input: [draft_article, verification_report]
+    output: [final_article]
+
+  - id: onpage_qa
+    model_tier: low
+    prompt: prompts/onpage_qa.md
+    input: [final_article, target_keyword]
+    output: [qa_report, pass_fail]
+
+  - id: publisher
+    model_tier: low
+    prompt: prompts/publisher_wp.md
+    input: [final_article, metadata]
+    output: [published_url, wp_post_id, status]
+
+  - id: performance_analyst
+    model_tier: medium
+    prompt: prompts/performance_analyst.md
+    input: [gsc_data, rank_data, article_urls]
+    output: [weekly_report, refresh_tasks]
+
+routing_policy:
+  low_tasks:
+    - keyword collection
+    - formatting and checklist QA
+    - publication mechanics
+  medium_tasks:
+    - SERP understanding
+    - draft writing
+    - source gathering
+  advanced_tasks:
+    - strategy decisions
+    - conflict resolution
+    - final verification and E-E-A-T pass
+
+quality_gates:
+  - gate: factuality
+    owner: fact_verifier
+    rule: "verdict must be PASS"
+  - gate: seo_tech
+    owner: onpage_qa
+    rule: "pass_fail must be PASS"
+  - gate: publish
+    owner: publisher
+    rule: "publish only if all previous gates are PASS"

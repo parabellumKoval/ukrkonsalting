@@ -1,0 +1,64 @@
+// ─── RESET ────────────────────────────────────────────────────────────────────
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: $font-sans;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.65;
+  font-size: 16px;
+  overflow-x: hidden;
+  @include smooth;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+ul,
+ol {
+  padding: 0;
+  list-style: none;
+}
+
+/* WordPress specific resets */
+.aligncenter {
+  display: block;
+  margin: 0 auto;
+}
+
+.wp-caption {
+  max-width: 100%;
+}
+
+.screen-reader-text {
+  clip: rect(1px, 1px, 1px, 1px);
+  position: absolute;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+  word-wrap: normal;
+}
