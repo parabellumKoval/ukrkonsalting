@@ -114,6 +114,13 @@ if (empty($faq) && function_exists('get_field')) {
 
 $date_str = $meta['date'] ? ukr_format_date($meta['date']) : '';
 $price_fmt = $meta['price'] ? number_format((float)$meta['price'], 0, '.', ' ') : '2 000';
+$hero_preamble = trim((string) ($meta['preamble'] ?? ''));
+if ($hero_preamble === '') {
+  $hero_preamble = trim((string) ($meta['description'] ?? ''));
+}
+if ($hero_preamble === '') {
+  $hero_preamble = get_the_excerpt();
+}
 
 $hero_primary_cta = $get_text_field($id, 'hero_primary_cta', 'Записатись на семінар');
 $hero_secondary_cta = $get_text_field($id, 'hero_secondary_cta', 'Дивитись програму ↓');
@@ -193,7 +200,7 @@ $register_note_price_suffix = $get_text_field($id, 'register_note_price_suffix',
       <?php the_title(); ?>
     </h1>
     <p class="hero-desc">
-      <?php echo esc_html($meta['description'] ?: get_the_excerpt()); ?>
+      <?php echo esc_html($hero_preamble); ?>
     </p>
 
     <div class="hero-meta">

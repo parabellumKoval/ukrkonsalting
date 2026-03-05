@@ -51,10 +51,18 @@
       },
       {
         "key": "field_seminar_description",
-        "label": "Короткий опис (hero)",
+        "label": "Короткий опис (hero, legacy)",
         "name": "seminar_description",
         "type": "textarea",
         "rows": 3
+      },
+      {
+        "key": "field_seminar_preamble",
+        "label": "Преамбула семінару (hero)",
+        "name": "seminar_preamble",
+        "type": "textarea",
+        "rows": 3,
+        "instructions": "Основний текст у hero. Має пріоритет над legacy-полем seminar_description."
       },
       {
         "key": "field_hero_primary_cta",

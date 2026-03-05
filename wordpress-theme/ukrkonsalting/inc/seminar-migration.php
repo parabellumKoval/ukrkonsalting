@@ -9,7 +9,7 @@ if (!defined('ABSPATH')) {
 add_action('init', 'ukr_migrate_seminar_post_10');
 function ukr_migrate_seminar_post_10(): void
 {
-  if (get_option('ukr_seminar_migration_v2_done')) {
+  if (get_option('ukr_seminar_migration_v3_done')) {
     return;
   }
 
@@ -24,6 +24,7 @@ function ukr_migrate_seminar_post_10(): void
   $data = [
     'seminar_eyebrow' => 'Онлайн-семінар · Zoom · Сертифікат',
     'seminar_description' => 'Семінар для інженерно-технічного персоналу з практичним розбором актуальних нормативних змін і виробничих кейсів.',
+    'seminar_preamble' => 'Семінар для інженерно-технічного персоналу з практичним розбором актуальних нормативних змін і виробничих кейсів.',
     'hero_primary_cta' => 'Записатись на семінар',
     'hero_secondary_cta' => 'Дивитись програму ↓',
     'hero_meta_certificate' => 'Сертифікат участі',
@@ -103,6 +104,23 @@ function ukr_migrate_seminar_post_10(): void
     'register_note_price_suffix' => 'без ПДВ · Документи за запитом',
   ];
 
+  $old_to_new_map = [
+    'seminar_short_description' => 'seminar_preamble',
+    'seminar_intro' => 'seminar_preamble',
+    'seminar_desc' => 'seminar_description',
+    'seminar_program_items' => 'seminar_program',
+    'seminar_teacher' => 'seminar_speaker',
+  ];
+
+  foreach ($old_to_new_map as $old_key => $new_key) {
+    $legacy_value = get_post_meta($seminar_id, $old_key, true);
+    $new_value = get_post_meta($seminar_id, $new_key, true);
+
+    if (!empty($legacy_value) && empty($new_value)) {
+      $data[$new_key] = $legacy_value;
+    }
+  }
+
   foreach ($data as $key => $value) {
     if (function_exists('update_field')) {
       update_field($key, $value, $seminar_id);
@@ -125,7 +143,7 @@ function ukr_migrate_seminar_post_10(): void
     update_post_meta($seminar_id, $legacy_key, $legacy_value);
   }
 
-  update_option('ukr_seminar_migration_v2_done', current_time('mysql'));
+  update_option('ukr_seminar_migration_v3_done', current_time('mysql'));
 }
 
 function ukr_ensure_default_speaker(): int

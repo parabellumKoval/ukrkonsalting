@@ -262,6 +262,7 @@ function ukr_seminar_meta(int $post_id): array
             'tag' => get_field('seminar_tag', $post_id),
             'eyebrow' => get_field('seminar_eyebrow', $post_id),
             'description' => get_field('seminar_description', $post_id),
+            'preamble' => get_field('seminar_preamble', $post_id),
         ];
     }
     // Fallback to post meta
@@ -273,6 +274,7 @@ function ukr_seminar_meta(int $post_id): array
         'tag' => get_post_meta($post_id, 'seminar_tag', true),
         'eyebrow' => get_post_meta($post_id, 'seminar_eyebrow', true),
         'description' => get_post_meta($post_id, 'seminar_description', true),
+        'preamble' => get_post_meta($post_id, 'seminar_preamble', true),
     ];
 }
 
