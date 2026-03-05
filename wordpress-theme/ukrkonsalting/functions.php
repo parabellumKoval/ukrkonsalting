@@ -260,8 +260,6 @@ function ukr_seminar_meta(int $post_id): array
             'format' => get_field('seminar_format', $post_id),
             'price' => get_field('seminar_price', $post_id),
             'tag' => get_field('seminar_tag', $post_id),
-            'eyebrow' => get_field('seminar_eyebrow', $post_id),
-            'description' => get_field('seminar_description', $post_id),
             'preamble' => get_field('seminar_preamble', $post_id),
         ];
     }
@@ -272,8 +270,6 @@ function ukr_seminar_meta(int $post_id): array
         'format' => get_post_meta($post_id, 'seminar_format', true),
         'price' => get_post_meta($post_id, 'seminar_price', true),
         'tag' => get_post_meta($post_id, 'seminar_tag', true),
-        'eyebrow' => get_post_meta($post_id, 'seminar_eyebrow', true),
-        'description' => get_post_meta($post_id, 'seminar_description', true),
         'preamble' => get_post_meta($post_id, 'seminar_preamble', true),
     ];
 }

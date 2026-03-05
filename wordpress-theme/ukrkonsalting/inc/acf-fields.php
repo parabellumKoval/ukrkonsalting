@@ -129,114 +129,11 @@ function ukr_acf_init()
     ),
   ));
 
-  // 2. Archive Settings (Theme Options)
-  acf_add_local_field_group(array(
-    'key' => 'group_theme_settings',
-    'title' => 'Глобальні налаштування семінарів',
-    'fields' => array(
-        array(
-        'key' => 'field_seminar_archive_title',
-        'label' => 'Заголовок сторінки семінарів',
-        'name' => 'seminar_archive_title',
-        'type' => 'text',
-        'default_value' => 'Всі семінари',
-      ),
-        array(
-        'key' => 'field_seminar_archive_subtitle',
-        'label' => 'Підзаголовок сторінки семінарів',
-        'name' => 'seminar_archive_subtitle',
-        'type' => 'text',
-        'default_value' => 'Спеціалізовані онлайн-програми для фахівців з охорони навколишнього середовища',
-      ),
-        array(
-        'key' => 'field_global_benefits',
-        'label' => 'Глобальні переваги (Про семінар)',
-        'name' => 'global_benefits',
-        'type' => 'repeater',
-        'instructions' => 'Буде використано для всіх семінарів за замовчуванням',
-        'sub_fields' => array(
-            array(
-            'key' => 'field_gb_icon',
-            'label' => 'Іконка',
-            'name' => 'bc_icon',
-            'type' => 'text',
-          ),
-            array(
-            'key' => 'field_gb_title',
-            'label' => 'Заголовок',
-            'name' => 'title',
-            'type' => 'text',
-          ),
-            array(
-            'key' => 'field_gb_text',
-            'label' => 'Текст',
-            'name' => 'text',
-            'type' => 'text',
-          ),
-        ),
-      ),
-        array(
-        'key' => 'field_global_what_get',
-        'label' => 'Що ви отримаєте після семінару (Глобально)',
-        'name' => 'global_what_get',
-        'type' => 'repeater',
-        'sub_fields' => array(
-            array(
-            'key' => 'field_gwg_icon',
-            'label' => 'Іконка',
-            'name' => 'get_icon',
-            'type' => 'text',
-          ),
-            array(
-            'key' => 'field_gwg_title',
-            'label' => 'Заголовок',
-            'name' => 'title',
-            'type' => 'text',
-          ),
-            array(
-            'key' => 'field_gwg_text',
-            'label' => 'Текст',
-            'name' => 'text',
-            'type' => 'text',
-          ),
-        ),
-      ),
-        array(
-        'key' => 'field_global_faq',
-        'label' => 'Відповіді на часті запитання (FAQ)',
-        'name' => 'global_faq',
-        'type' => 'repeater',
-        'sub_fields' => array(
-            array(
-            'key' => 'field_faq_q',
-            'label' => 'Питання',
-            'name' => 'question',
-            'type' => 'text',
-          ),
-            array(
-            'key' => 'field_faq_a',
-            'label' => 'Відповідь',
-            'name' => 'answer',
-            'type' => 'textarea',
-          ),
-        ),
-      ),
-    ),
-    'location' => array(
-        array(
-          array(
-          'param' => 'options_page',
-          'operator' => '==',
-          'value' => 'theme-settings',
-        ),
-      ),
-    ),
-  ));
-
-  // 3. Seminar + Speaker fields from local JSON (ensures fields exist without manual ACF sync)
+  // 2. Seminar + Speaker + Global seminar settings from local JSON
   $json_groups = [
     UKR_DIR . '/acf-json/group_seminar.json',
     UKR_DIR . '/acf-json/group_speaker.json',
+    UKR_DIR . '/acf-json/group_global_seminar_settings.json',
   ];
 
   foreach ($json_groups as $group_file) {
@@ -245,13 +142,18 @@ function ukr_acf_init()
     }
 
     $json = file_get_contents($group_file);
-    $groups = json_decode($json ?: '', true);
+    $decoded = json_decode($json ?: '', true);
 
-    if (json_last_error() === JSON_ERROR_NONE && is_array($groups)) {
-      foreach ($groups as $group) {
-        if (is_array($group) && !empty($group['key'])) {
-          acf_add_local_field_group($group);
-        }
+    if (json_last_error() !== JSON_ERROR_NONE || !is_array($decoded)) {
+      continue;
+    }
+
+    // ACF local JSON is usually a single group object; support both single object and list.
+    $groups_to_register = isset($decoded['key']) ? [$decoded] : $decoded;
+
+    foreach ($groups_to_register as $group) {
+      if (is_array($group) && !empty($group['key']) && !empty($group['fields'])) {
+        acf_add_local_field_group($group);
       }
     }
   }

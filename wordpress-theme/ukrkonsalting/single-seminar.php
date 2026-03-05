@@ -13,10 +13,7 @@ the_post();
 $id = get_the_ID();
 $meta = ukr_seminar_meta($id);
 
-// ACF fields
-$benefits = function_exists('get_field') ? (get_field('seminar_benefits', $id) ?: []) : [];
-$legal_note = function_exists('get_field') ? get_field('seminar_legal', $id) : '';
-$who_list = function_exists('get_field') ? (get_field('seminar_target', $id) ?: []) : [];
+// Individual seminar fields (post-specific)
 $programs = function_exists('get_field') ? (get_field('seminar_program', $id) ?: []) : [];
 $speaker_post = function_exists('get_field') ? get_field('seminar_speaker', $id) : null;
 if (is_numeric($speaker_post)) {
@@ -38,54 +35,22 @@ if ($speaker_post instanceof WP_Post) {
   $speaker_tags = function_exists('get_field') ? (get_field('speaker_tags', $speaker_post->ID) ?: []) : (get_post_meta($speaker_post->ID, 'speaker_tags', true) ?: []);
 }
 
-if (!$speaker_name) {
-  $speaker_name = function_exists('get_field') ? (string) get_field('speaker_name', $id) : (string) get_post_meta($id, 'speaker_name', true);
-  $speaker_org = function_exists('get_field') ? (string) get_field('speaker_org', $id) : (string) get_post_meta($id, 'speaker_org', true);
-  $speaker_bio = function_exists('get_field') ? (string) get_field('speaker_bio', $id) : (string) get_post_meta($id, 'speaker_bio', true);
-  $speaker_tags = function_exists('get_field') ? (get_field('speaker_tags', $id) ?: []) : (get_post_meta($id, 'speaker_tags', true) ?: []);
-}
-
-$what_get = function_exists('get_field') ? (get_field('what_you_get', $id) ?: []) : [];
-$faq = function_exists('get_field') ? (get_field('seminar_faq', $id) ?: []) : [];
-
-$get_text_field = static function (int $post_id, string $field_name, string $default = ''): string {
-  $value = '';
-
-  if (function_exists('get_field')) {
-    $field_value = get_field($field_name, $post_id);
-    if (is_string($field_value)) {
-      $value = trim($field_value);
-    }
+$get_global_text = static function (string $field_name): string {
+  if (!function_exists('get_field')) {
+    return '';
   }
 
-  if ($value === '') {
-    $meta_value = get_post_meta($post_id, $field_name, true);
-    if (is_string($meta_value)) {
-      $value = trim($meta_value);
-    }
-  }
-
-  return $value !== '' ? $value : $default;
+  $value = get_field($field_name, 'option');
+  return is_string($value) ? trim($value) : '';
 };
 
-$get_repeater_field = static function (int $post_id, string $field_name, array $default = []): array {
-  $value = [];
-
-  if (function_exists('get_field')) {
-    $field_value = get_field($field_name, $post_id);
-    if (is_array($field_value)) {
-      $value = $field_value;
-    }
+$get_global_repeater = static function (string $field_name): array {
+  if (!function_exists('get_field')) {
+    return [];
   }
 
-  if (empty($value)) {
-    $meta_value = get_post_meta($post_id, $field_name, true);
-    if (is_array($meta_value)) {
-      $value = $meta_value;
-    }
-  }
-
-  return !empty($value) ? $value : $default;
+  $value = get_field($field_name, 'option');
+  return is_array($value) ? $value : [];
 };
 
 $allowed_title_html = [
@@ -99,81 +64,62 @@ $render_title = static function (string $value) use ($allowed_title_html): strin
   return wp_kses($value, $allowed_title_html);
 };
 
-// Fallback to Global Settings (Options Page)
-if (empty($benefits) && function_exists('get_field')) {
-  $benefits = get_field('global_benefits', 'options') ?: [];
-}
-if (empty($what_get) && function_exists('get_field')) {
-  $what_get = get_field('global_what_get', 'options') ?: [];
-}
-if (empty($faq) && function_exists('get_field')) {
-  $faq = get_field('global_faq', 'options') ?: [];
-}
-
-// Keep lists empty when not configured; avoid seminar-specific hardcoded content.
+// Global seminar UI/settings (options page)
+$benefits = $get_global_repeater('global_benefits');
+$legal_note = $get_global_text('seminar_legal');
+$who_list = $get_global_repeater('global_target');
+$what_get = $get_global_repeater('global_what_get');
+$faq = $get_global_repeater('global_faq');
 
 $date_str = $meta['date'] ? ukr_format_date($meta['date']) : '';
-$price_fmt = $meta['price'] ? number_format((float)$meta['price'], 0, '.', ' ') : '2 000';
+$price_fmt = $meta['price'] ? number_format((float) $meta['price'], 0, '.', ' ') : '';
 $hero_preamble = trim((string) ($meta['preamble'] ?? ''));
-if ($hero_preamble === '') {
-  $hero_preamble = trim((string) ($meta['description'] ?? ''));
-}
 if ($hero_preamble === '') {
   $hero_preamble = get_the_excerpt();
 }
 
-$hero_primary_cta = $get_text_field($id, 'hero_primary_cta', 'Записатись на семінар');
-$hero_secondary_cta = $get_text_field($id, 'hero_secondary_cta', 'Дивитись програму ↓');
-$hero_meta_certificate = $get_text_field($id, 'hero_meta_certificate', 'Сертифікат участі');
-$hero_meta_materials = $get_text_field($id, 'hero_meta_materials', 'Методичні матеріали');
+$hero_eyebrow = $get_global_text('seminar_eyebrow');
+$hero_primary_cta = $get_global_text('hero_primary_cta');
+$hero_secondary_cta = $get_global_text('hero_secondary_cta');
+$hero_meta_certificate = $get_global_text('hero_meta_certificate');
+$hero_meta_materials = $get_global_text('hero_meta_materials');
 
-$price_note = $get_text_field($id, 'seminar_price_note', 'ПДВ не передбачений · Документи за запитом');
-$price_cta = $get_text_field($id, 'seminar_price_cta', 'Записатись →');
-$price_features = $get_repeater_field($id, 'seminar_price_features', [
-  ['feature' => '✓ Матеріали включено'],
-  ['feature' => '✓ Сертифікат'],
-  ['feature' => '✓ Q&A сесія'],
-  ['feature' => '✓ Консультація'],
-]);
+$price_note = $get_global_text('seminar_price_note');
+$price_cta = $get_global_text('seminar_price_cta');
+$price_features = $get_global_repeater('seminar_price_features');
 
-$benefits_kicker = $get_text_field($id, 'benefits_kicker', 'Про семінар');
-$benefits_title = $get_text_field($id, 'benefits_title', 'Навіщо цей семінар<br><em>вашому підприємству</em>');
-$benefits_lead = $get_text_field($id, 'benefits_lead', 'Програма з максимально практичною спрямованістю — реальні кейси, актуальне законодавство і розбір питань конкретного підприємства.');
+$benefits_kicker = $get_global_text('benefits_kicker');
+$benefits_title = $get_global_text('benefits_title');
+$benefits_lead = $get_global_text('benefits_lead');
 
-$who_kicker = $get_text_field($id, 'who_kicker', 'Для кого');
-$who_title = $get_text_field($id, 'who_title', 'Цільова <em>аудиторія</em>');
-$who_lead = $get_text_field($id, 'who_lead', 'Семінар розроблений для фахівців промислових підприємств.');
+$who_kicker = $get_global_text('who_kicker');
+$who_title = $get_global_text('who_title');
+$who_lead = $get_global_text('who_lead');
 
-$program_kicker = $get_text_field($id, 'program_kicker', 'Програма навчання');
-$program_title = $get_text_field($id, 'program_title', 'Теми — від закону<br><em>до практики</em>');
-$program_lead = $get_text_field($id, 'program_lead', 'Натисніть на тему для перегляду деталей.');
+$program_kicker = $get_global_text('program_kicker');
+$program_title = $get_global_text('program_title');
+$program_lead = $get_global_text('program_lead');
 
-$speaker_kicker = $get_text_field($id, 'speaker_kicker', 'Викладач');
-$speaker_title = $get_text_field($id, 'speaker_title', 'Хто проводить<br><em>семінар</em>');
+$speaker_kicker = $get_global_text('speaker_kicker');
+$speaker_title = $get_global_text('speaker_title');
 
-$what_get_kicker = $get_text_field($id, 'what_get_kicker', 'Що включено');
-$what_get_title = $get_text_field($id, 'what_get_title', 'Що ви отримаєте<br><em>після семінару</em>');
-$what_get_lead = $get_text_field($id, 'what_get_lead', 'Все необхідне для підвищення кваліфікації включено у вартість участі.');
+$what_get_kicker = $get_global_text('what_get_kicker');
+$what_get_title = $get_global_text('what_get_title');
+$what_get_lead = $get_global_text('what_get_lead');
 
-$faq_kicker = $get_text_field($id, 'faq_kicker', 'Часті запитання');
-$faq_title = $get_text_field($id, 'faq_title', 'Відповіді на<br><em>популярні питання</em>');
+$faq_kicker = $get_global_text('faq_kicker');
+$faq_title = $get_global_text('faq_title');
 
-$corp_title = $get_text_field($id, 'corp_title', 'Потрібно навчити<br>цілу <em>команду?</em>');
-$corp_text = $get_text_field($id, 'corp_text', 'Організуємо корпоративний семінар для вашого підприємства за фіксованою вартістю — онлайн або з виїздом спеціаліста.');
-$corp_pills = $get_repeater_field($id, 'corp_pills', [
-  ['pill' => '📹 Zoom або виїзд'],
-  ['pill' => '👥 Будь-яка кількість учасників'],
-  ['pill' => '🗓 Зручна дата для вас'],
-  ['pill' => '📍 Вся Україна'],
-  ['pill' => '🏭 Під умови вашого виробництва'],
-]);
+$corp_title = $get_global_text('corp_title');
+$corp_text = $get_global_text('corp_text');
+$corp_pills = $get_global_repeater('corp_pills');
 
-$register_kicker = $get_text_field($id, 'register_kicker', 'Реєстрація');
-$register_title = $get_text_field($id, 'register_title', 'Готові записатись<br><em>на семінар?</em>');
-$register_lead = $get_text_field($id, 'register_lead', 'Залиште заявку зручним для вас способом.');
-$register_note_intro = $get_text_field($id, 'register_note_intro', 'Також доступні Telegram та Viber · Відповідаємо');
-$register_note_price_label = $get_text_field($id, 'register_note_price_label', 'Вартість:');
-$register_note_price_suffix = $get_text_field($id, 'register_note_price_suffix', 'без ПДВ · Документи за запитом');
+$register_kicker = $get_global_text('register_kicker');
+$register_title = $get_global_text('register_title');
+$register_lead = $get_global_text('register_lead');
+$register_note_intro = $get_global_text('register_note_intro');
+$register_note_price_label = $get_global_text('register_note_price_label');
+$register_note_price_suffix = $get_global_text('register_note_price_suffix');
 ?>
 
 <!-- Breadcrumb -->
@@ -193,7 +139,7 @@ $register_note_price_suffix = $get_text_field($id, 'register_note_price_suffix',
     <div class="hero-eyebrow hero-eyebrow--event">
       <div class="hero-eyebrow-dot"></div>
       <span>
-        <?php echo esc_html($meta['eyebrow'] ?: 'Онлайн-семінар · Zoom · Сертифікат'); ?>
+        <?php echo esc_html($hero_eyebrow); ?>
       </span>
     </div>
     <h1>

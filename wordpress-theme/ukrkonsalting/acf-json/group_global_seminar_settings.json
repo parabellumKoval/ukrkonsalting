@@ -3,88 +3,113 @@
     "key": "group_global_seminar_settings",
     "title": "Глобальні налаштування семінарів",
     "fields": [
+      {"key":"field_seminar_archive_title","label":"Заголовок сторінки семінарів","name":"seminar_archive_title","type":"text"},
+      {"key":"field_seminar_archive_subtitle","label":"Підзаголовок сторінки семінарів","name":"seminar_archive_subtitle","type":"text"},
+
+      {"key":"field_seminar_eyebrow_global","label":"Hero: eyebrow","name":"seminar_eyebrow","type":"text"},
+      {"key":"field_hero_primary_cta_global","label":"Кнопка Hero (основна)","name":"hero_primary_cta","type":"text"},
+      {"key":"field_hero_secondary_cta_global","label":"Кнопка Hero (другорядна)","name":"hero_secondary_cta","type":"text"},
+      {"key":"field_hero_meta_certificate_global","label":"Плашка Hero: сертифікат","name":"hero_meta_certificate","type":"text"},
+      {"key":"field_hero_meta_materials_global","label":"Плашка Hero: матеріали","name":"hero_meta_materials","type":"text"},
+
+      {"key":"field_seminar_price_note_global","label":"Примітка в блоці вартості","name":"seminar_price_note","type":"text"},
+      {"key":"field_seminar_price_cta_global","label":"Кнопка в блоці вартості","name":"seminar_price_cta","type":"text"},
       {
-        "key": "field_global_benefits",
-        "label": "Дефолтні переваги",
-        "name": "global_benefits",
-        "type": "repeater",
-        "sub_fields": [
-          {
-            "key": "field_gbc_icon",
-            "label": "Емодзі",
-            "name": "bc_icon",
-            "type": "text"
-          },
-          {
-            "key": "field_gbc_title",
-            "label": "Заголовок",
-            "name": "title",
-            "type": "text"
-          },
-          {
-            "key": "field_gbc_text",
-            "label": "Опис",
-            "name": "text",
-            "type": "textarea"
-          }
+        "key":"field_seminar_price_features_global",
+        "label":"Плашки переваг біля вартості",
+        "name":"seminar_price_features",
+        "type":"repeater",
+        "sub_fields":[
+          {"key":"field_price_feature_text_global","label":"Текст плашки","name":"feature","type":"text"}
         ]
       },
+
+      {"key":"field_benefits_kicker_global","label":"Кікер секції Про семінар","name":"benefits_kicker","type":"text"},
+      {"key":"field_benefits_title_global","label":"Заголовок секції Про семінар","name":"benefits_title","type":"text"},
+      {"key":"field_benefits_lead_global","label":"Опис секції Про семінар","name":"benefits_lead","type":"textarea"},
       {
-        "key": "field_global_what_get",
-        "label": "Дефолтно: Що ви отримаєте",
-        "name": "global_what_get",
-        "type": "repeater",
-        "sub_fields": [
-          {
-            "key": "field_gget_icon",
-            "label": "Емодзі",
-            "name": "get_icon",
-            "type": "text"
-          },
-          {
-            "key": "field_gget_title",
-            "label": "Заголовок",
-            "name": "title",
-            "type": "text"
-          },
-          {
-            "key": "field_gget_text",
-            "label": "Опис",
-            "name": "text",
-            "type": "textarea"
-          }
+        "key":"field_global_benefits",
+        "label":"Переваги (глобально)",
+        "name":"global_benefits",
+        "type":"repeater",
+        "sub_fields":[
+          {"key":"field_gb_icon","label":"Емодзі","name":"bc_icon","type":"text"},
+          {"key":"field_gb_title","label":"Заголовок","name":"title","type":"text"},
+          {"key":"field_gb_text","label":"Опис","name":"text","type":"textarea"}
         ]
       },
+      {"key":"field_seminar_legal_global","label":"Правова примітка (legal box)","name":"seminar_legal","type":"wysiwyg","toolbar":"basic"},
+
+      {"key":"field_who_kicker_global","label":"Кікер секції Для кого","name":"who_kicker","type":"text"},
+      {"key":"field_who_title_global","label":"Заголовок секції Для кого","name":"who_title","type":"text"},
+      {"key":"field_who_lead_global","label":"Опис секції Для кого","name":"who_lead","type":"textarea"},
       {
-        "key": "field_global_faq",
-        "label": "Дефолтний FAQ",
-        "name": "global_faq",
-        "type": "repeater",
-        "sub_fields": [
-          {
-            "key": "field_gfaq_q",
-            "label": "Питання",
-            "name": "question",
-            "type": "text"
-          },
-          {
-            "key": "field_gfaq_a",
-            "label": "Відповідь",
-            "name": "answer",
-            "type": "textarea"
-          }
+        "key":"field_global_target",
+        "label":"Для кого (глобально)",
+        "name":"global_target",
+        "type":"repeater",
+        "sub_fields":[
+          {"key":"field_who_num_global","label":"Номер","name":"num","type":"text"},
+          {"key":"field_who_title_item_global","label":"Назва ролі","name":"title","type":"text"},
+          {"key":"field_who_text_global","label":"Опис","name":"text","type":"textarea"}
         ]
-      }
+      },
+
+      {"key":"field_program_kicker_global","label":"Кікер секції Програма","name":"program_kicker","type":"text"},
+      {"key":"field_program_title_global","label":"Заголовок секції Програма","name":"program_title","type":"text"},
+      {"key":"field_program_lead_global","label":"Опис секції Програма","name":"program_lead","type":"textarea"},
+
+      {"key":"field_speaker_kicker_global","label":"Кікер секції Викладач","name":"speaker_kicker","type":"text"},
+      {"key":"field_speaker_title_global","label":"Заголовок секції Викладач","name":"speaker_title","type":"text"},
+
+      {"key":"field_what_get_kicker_global","label":"Кікер секції Що включено","name":"what_get_kicker","type":"text"},
+      {"key":"field_what_get_title_global","label":"Заголовок секції Що включено","name":"what_get_title","type":"text"},
+      {"key":"field_what_get_lead_global","label":"Опис секції Що включено","name":"what_get_lead","type":"textarea"},
+      {
+        "key":"field_global_what_get",
+        "label":"Що ви отримаєте (глобально)",
+        "name":"global_what_get",
+        "type":"repeater",
+        "sub_fields":[
+          {"key":"field_gwg_icon","label":"Емодзі","name":"get_icon","type":"text"},
+          {"key":"field_gwg_title","label":"Заголовок","name":"title","type":"text"},
+          {"key":"field_gwg_text","label":"Опис","name":"text","type":"textarea"}
+        ]
+      },
+
+      {"key":"field_faq_kicker_global","label":"Кікер секції FAQ","name":"faq_kicker","type":"text"},
+      {"key":"field_faq_title_global","label":"Заголовок секції FAQ","name":"faq_title","type":"text"},
+      {
+        "key":"field_global_faq",
+        "label":"FAQ (глобально)",
+        "name":"global_faq",
+        "type":"repeater",
+        "sub_fields":[
+          {"key":"field_gfaq_q","label":"Питання","name":"question","type":"text"},
+          {"key":"field_gfaq_a","label":"Відповідь","name":"answer","type":"textarea"}
+        ]
+      },
+
+      {"key":"field_corp_title_global","label":"Заголовок корпоративного блоку","name":"corp_title","type":"text"},
+      {"key":"field_corp_text_global","label":"Текст корпоративного блоку","name":"corp_text","type":"textarea"},
+      {
+        "key":"field_corp_pills_global",
+        "label":"Плашки корпоративного блоку",
+        "name":"corp_pills",
+        "type":"repeater",
+        "sub_fields":[
+          {"key":"field_corp_pill_text_global","label":"Текст плашки","name":"pill","type":"text"}
+        ]
+      },
+
+      {"key":"field_register_kicker_global","label":"Кікер секції реєстрації","name":"register_kicker","type":"text"},
+      {"key":"field_register_title_global","label":"Заголовок секції реєстрації","name":"register_title","type":"text"},
+      {"key":"field_register_lead_global","label":"Опис секції реєстрації","name":"register_lead","type":"text"},
+      {"key":"field_register_note_intro_global","label":"Примітка під формою: перший рядок","name":"register_note_intro","type":"text"},
+      {"key":"field_register_note_price_label_global","label":"Примітка під формою: мітка вартості","name":"register_note_price_label","type":"text"},
+      {"key":"field_register_note_price_suffix_global","label":"Примітка під формою: хвіст після ціни","name":"register_note_price_suffix","type":"text"}
     ],
-    "location": [
-      [
-        {
-          "param": "options_page",
-          "operator": "==",
-          "value": "theme-settings"
-        }
-      ]
-    ],
+    "location": [[{"param":"options_page","operator":"==","value":"theme-settings"}]],
     "active": true
   }
 ]

@@ -4,12 +4,14 @@ if (!defined('ABSPATH')) {
 }
 
 /**
- * One-time migration: de-hardcode seminar data into ACF/meta for post ID 10.
+ * One-time migration (v4):
+ * - keep only individual seminar data on post #10
+ * - move universal seminar UI/settings from post #10 into global options
  */
-add_action('init', 'ukr_migrate_seminar_post_10');
-function ukr_migrate_seminar_post_10(): void
+add_action('init', 'ukr_migrate_seminar_architecture_v4');
+function ukr_migrate_seminar_architecture_v4(): void
 {
-  if (get_option('ukr_seminar_migration_v3_done')) {
+  if (get_option('ukr_seminar_migration_v4_done')) {
     return;
   }
 
@@ -21,10 +23,33 @@ function ukr_migrate_seminar_post_10(): void
 
   $speaker_id = ukr_ensure_default_speaker();
 
-  $data = [
-    'seminar_eyebrow' => 'Онлайн-семінар · Zoom · Сертифікат',
-    'seminar_description' => 'Семінар для інженерно-технічного персоналу з практичним розбором актуальних нормативних змін і виробничих кейсів.',
+  // P1 individual fields that should remain on seminar posts.
+  $individual_defaults = [
     'seminar_preamble' => 'Семінар для інженерно-технічного персоналу з практичним розбором актуальних нормативних змін і виробничих кейсів.',
+    'seminar_date' => '',
+    'seminar_time' => '',
+    'seminar_format' => 'Zoom',
+    'seminar_price' => 2000,
+    'seminar_program' => [
+      ['prog_theme' => 'Тема 1', 'prog_heading' => 'Нормативно-правові акти. Відповідальність підприємств', 'prog_items' => [['item' => 'Огляд чинного законодавства'], ['item' => 'Новації 2025–2026 рр.'], ['item' => 'Відповідальність за порушення'], ['item' => 'Повноваження контролюючих органів']], 'prog_note' => 'Орієнтовно 1.5–2 години з можливістю запитань'],
+      ['prog_theme' => 'Тема 2 · Основна', 'prog_heading' => 'Правила технічної експлуатації ГОУ — Наказ №52', 'prog_items' => [['item' => 'Вимоги до суб\'єктів господарювання'], ['item' => 'Розробка паспорту ГОУ'], ['item' => 'Розробка інструкцій з експлуатації'], ['item' => 'Перевірка ефективності та оцінка технічного стану']], 'prog_note' => 'Основна практична тема. Рекомендується надіслати питання заздалегідь'],
+    ],
+    'seminar_speaker' => $speaker_id,
+  ];
+
+  foreach ($individual_defaults as $field_key => $default_value) {
+    $existing = get_post_meta($seminar_id, $field_key, true);
+    $value = ($existing !== '' && $existing !== null) ? $existing : $default_value;
+
+    if (function_exists('update_field')) {
+      update_field($field_key, $value, $seminar_id);
+    }
+    update_post_meta($seminar_id, $field_key, $value);
+  }
+
+  // Universal fields moved from seminar post to global options.
+  $global_defaults = [
+    'seminar_eyebrow' => 'Онлайн-семінар · Zoom · Сертифікат',
     'hero_primary_cta' => 'Записатись на семінар',
     'hero_secondary_cta' => 'Дивитись програму ↓',
     'hero_meta_certificate' => 'Сертифікат участі',
@@ -40,7 +65,7 @@ function ukr_migrate_seminar_post_10(): void
     'benefits_kicker' => 'Про семінар',
     'benefits_title' => 'Навіщо цей семінар<br><em>вашому підприємству</em>',
     'benefits_lead' => 'Програма з максимально практичною спрямованістю — реальні кейси, актуальне законодавство і розбір питань конкретного підприємства.',
-    'seminar_benefits' => [
+    'global_benefits' => [
       ['bc_icon' => '⚖️', 'title' => 'Новації законодавства', 'text' => 'Повний огляд останніх змін у нормативно-правових актах.'],
       ['bc_icon' => '🔧', 'title' => 'Практика вимог', 'text' => 'Детальний розбір вимог до суб\'єктів господарювання.'],
       ['bc_icon' => '💬', 'title' => 'Відповіді на питання', 'text' => 'Надсилайте питання заздалегідь або задавайте напряму під час Q&A.'],
@@ -50,7 +75,7 @@ function ukr_migrate_seminar_post_10(): void
     'who_kicker' => 'Для кого',
     'who_title' => 'Цільова <em>аудиторія</em>',
     'who_lead' => 'Семінар розроблений для фахівців промислових підприємств.',
-    'seminar_target' => [
+    'global_target' => [
       ['num' => '01', 'title' => 'Служба головного інженера', 'text' => 'Відповідальні за технічний стан та документацію.'],
       ['num' => '02', 'title' => 'Служба головного енергетика', 'text' => 'Фахівці з технічної експлуатації обладнання.'],
       ['num' => '03', 'title' => 'Екологічна служба', 'text' => 'Екологи та відповідальні за охорону навколишнього середовища.'],
@@ -58,34 +83,21 @@ function ukr_migrate_seminar_post_10(): void
     'program_kicker' => 'Програма навчання',
     'program_title' => 'Теми — від закону<br><em>до практики</em>',
     'program_lead' => 'Натисніть на тему для перегляду деталей.',
-    'seminar_program' => [
-      ['prog_theme' => 'Тема 1', 'prog_heading' => 'Нормативно-правові акти. Відповідальність підприємств', 'prog_items' => [['item' => 'Огляд чинного законодавства'], ['item' => 'Новації 2025–2026 рр.'], ['item' => 'Відповідальність за порушення'], ['item' => 'Повноваження контролюючих органів']], 'prog_note' => 'Орієнтовно 1.5–2 години з можливістю запитань'],
-      ['prog_theme' => 'Тема 2 · Основна', 'prog_heading' => 'Правила технічної експлуатації ГОУ — Наказ №52', 'prog_items' => [['item' => 'Вимоги до суб\'єктів господарювання'], ['item' => 'Розробка паспорту ГОУ'], ['item' => 'Розробка інструкцій з експлуатації'], ['item' => 'Перевірка ефективності та оцінка технічного стану']], 'prog_note' => 'Основна практична тема. Рекомендується надіслати питання заздалегідь'],
-      ['prog_theme' => 'Тема 3', 'prog_heading' => 'Огляд сучасних установок очищення газу', 'prog_items' => [['item' => 'Типи газоочисних установок'], ['item' => 'Критерії вибору ГОУ'], ['item' => 'Підвищення ефективності роботи'], ['item' => 'Практичні приклади']], 'prog_note' => ''],
-      ['prog_theme' => 'Тема 4', 'prog_heading' => 'Індивідуальні консультації — питання учасників', 'prog_items' => [['item' => 'Відповіді на питання, надіслані заздалегідь'], ['item' => 'Q&A сесія в прямому ефірі'], ['item' => 'Розбір конкретних ситуацій']], 'prog_note' => 'Питання надсилайте заздалегідь: uktc@ukr.net'],
-    ],
     'speaker_kicker' => 'Викладач',
     'speaker_title' => 'Хто проводить<br><em>семінар</em>',
-    'seminar_speaker' => $speaker_id,
     'what_get_kicker' => 'Що включено',
     'what_get_title' => 'Що ви отримаєте<br><em>після семінару</em>',
     'what_get_lead' => 'Все необхідне для підвищення кваліфікації включено у вартість участі.',
-    'what_you_get' => [
+    'global_what_get' => [
       ['get_icon' => '📂', 'title' => 'Методичні матеріали', 'text' => 'В електронному або друкованому вигляді.'],
       ['get_icon' => '🏅', 'title' => 'Сертифікат участі', 'text' => 'Офіційне підтвердження підвищення кваліфікації.'],
       ['get_icon' => '🖥', 'title' => 'Ілюстративні слайди', 'text' => 'Повна презентація лектора у цифровому форматі.'],
-      ['get_icon' => '📑', 'title' => 'Документи за запитом', 'text' => 'Для бухгалтерії та звітності підприємства.'],
-      ['get_icon' => '🎓', 'title' => 'Право проводити перевірки', 'text' => 'Участь у комісіях перевірки знань на підприємстві.'],
-      ['get_icon' => '💬', 'title' => 'Індивідуальна консультація', 'text' => 'Відповіді щодо конкретної ситуації вашого підприємства.'],
     ],
     'faq_kicker' => 'Часті запитання',
     'faq_title' => 'Відповіді на<br><em>популярні питання</em>',
-    'seminar_faq' => [
-      ['question' => 'Чи надається запис семінару після заходу?', 'answer' => 'Запис не надається — семінар проводиться у форматі живої взаємодії для Q&A і консультацій. Учасники отримують повні методичні матеріали та слайди.'],
+    'global_faq' => [
+      ['question' => 'Чи надається запис семінару після заходу?', 'answer' => 'Запис не надається — семінар проводиться у форматі живої взаємодії для Q&A і консультацій.'],
       ['question' => 'Як отримати посилання на Zoom?', 'answer' => 'Після реєстрації та підтвердження оплати посилання надсилається на email не пізніше ніж за один день до початку.'],
-      ['question' => 'Можна надіслати декількох співробітників?', 'answer' => 'Так. Для груп від одного підприємства — корпоративний формат за фіксованою вартістю. Зв\'яжіться з нами.'],
-      ['question' => 'Який рівень підготовки потрібен?', 'answer' => 'Базових знань у галузі охорони довкілля або промислового виробництва достатньо.'],
-      ['question' => 'Як здійснити оплату? Чи є рахунок-фактура?', 'answer' => 'Після реєстрації надсилаємо всі документи для оплати. Корпоративні документи (рахунок, акт) надаються за запитом.'],
     ],
     'corp_title' => 'Потрібно навчити<br>цілу <em>команду?</em>',
     'corp_text' => 'Організуємо корпоративний семінар для вашого підприємства за фіксованою вартістю — онлайн або з виїздом спеціаліста.',
@@ -93,8 +105,6 @@ function ukr_migrate_seminar_post_10(): void
       ['pill' => '📹 Zoom або виїзд'],
       ['pill' => '👥 Будь-яка кількість учасників'],
       ['pill' => '🗓 Зручна дата для вас'],
-      ['pill' => '📍 Вся Україна'],
-      ['pill' => '🏭 Під умови вашого виробництва'],
     ],
     'register_kicker' => 'Реєстрація',
     'register_title' => 'Готові записатись<br><em>на семінар?</em>',
@@ -104,46 +114,34 @@ function ukr_migrate_seminar_post_10(): void
     'register_note_price_suffix' => 'без ПДВ · Документи за запитом',
   ];
 
-  $old_to_new_map = [
-    'seminar_short_description' => 'seminar_preamble',
-    'seminar_intro' => 'seminar_preamble',
-    'seminar_desc' => 'seminar_description',
-    'seminar_program_items' => 'seminar_program',
-    'seminar_teacher' => 'seminar_speaker',
+  $post_to_global_map = [
+    'seminar_benefits' => 'global_benefits',
+    'seminar_target' => 'global_target',
+    'what_you_get' => 'global_what_get',
+    'seminar_faq' => 'global_faq',
   ];
 
-  foreach ($old_to_new_map as $old_key => $new_key) {
-    $legacy_value = get_post_meta($seminar_id, $old_key, true);
-    $new_value = get_post_meta($seminar_id, $new_key, true);
+  foreach ($global_defaults as $option_key => $default_value) {
+    $post_key = array_search($option_key, $post_to_global_map, true);
+    $post_value = $post_key ? get_post_meta($seminar_id, $post_key, true) : get_post_meta($seminar_id, $option_key, true);
 
-    if (!empty($legacy_value) && empty($new_value)) {
-      $data[$new_key] = $legacy_value;
+    $current_global = function_exists('get_field') ? get_field($option_key, 'option') : get_option('options_' . $option_key, null);
+
+    $value = $default_value;
+    if ($post_value !== '' && $post_value !== null) {
+      $value = $post_value;
     }
-  }
+    if ($current_global !== '' && $current_global !== null && $current_global !== []) {
+      $value = $current_global;
+    }
 
-  foreach ($data as $key => $value) {
     if (function_exists('update_field')) {
-      update_field($key, $value, $seminar_id);
+      update_field($option_key, $value, 'option');
     }
-    update_post_meta($seminar_id, $key, $value);
+    update_option('options_' . $option_key, $value);
   }
 
-  $legacy_map = [
-    'speaker_name' => 'Гутков Георгій Валентинович',
-    'speaker_org' => 'Завідувач сектору · Харківський НДІ екологічних проблем',
-    'speaker_bio' => 'Провідний фахівець у галузі охорони атмосферного повітря та технічної експлуатації газоочисного обладнання.',
-    'speaker_tags' => [
-      ['tag' => '🔬 НДІ екологічних проблем'],
-      ['tag' => '⚖️ Природоохоронне законодавство'],
-      ['tag' => '🏭 Газоочисне обладнання'],
-    ],
-  ];
-
-  foreach ($legacy_map as $legacy_key => $legacy_value) {
-    update_post_meta($seminar_id, $legacy_key, $legacy_value);
-  }
-
-  update_option('ukr_seminar_migration_v3_done', current_time('mysql'));
+  update_option('ukr_seminar_migration_v4_done', current_time('mysql'));
 }
 
 function ukr_ensure_default_speaker(): int
