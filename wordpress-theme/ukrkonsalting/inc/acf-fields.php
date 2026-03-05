@@ -158,3 +158,44 @@ function ukr_acf_init()
     }
   }
 }
+
+/**
+ * ACF Free compatibility for seminar_program.
+ * Old values may still be stored as repeater arrays.
+ */
+add_filter('acf/load_value/name=seminar_program', function ($value, $post_id, $field) {
+  if (!is_array($value)) {
+    return $value;
+  }
+
+  $lines = [];
+  foreach ($value as $idx => $topic) {
+    if (!is_array($topic)) {
+      continue;
+    }
+
+    $n = (int) $idx + 1;
+    $heading = trim((string) ($topic['prog_heading'] ?? ''));
+    $lines[] = 'Тема ' . $n . ': ' . ($heading !== '' ? $heading : ('Тема ' . $n));
+
+    $items = $topic['prog_items'] ?? [];
+    if (is_array($items)) {
+      foreach ($items as $item) {
+        $text = is_array($item) ? ($item['item'] ?? '') : (string) $item;
+        $text = trim((string) $text);
+        if ($text !== '') {
+          $lines[] = '- ' . $text;
+        }
+      }
+    }
+
+    $note = trim((string) ($topic['prog_note'] ?? ''));
+    if ($note !== '') {
+      $lines[] = 'Примітка: ' . $note;
+    }
+
+    $lines[] = '';
+  }
+
+  return trim(implode("\n", $lines));
+}, 10, 3);
